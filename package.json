@@ -1,0 +1,22 @@
+{
+  "name": "nodesecurity-api",
+  "version": "0.0.1",
+  "description": "The Node Security Project API",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/nodesecurity/api.git"
+  },
+  "keywords": [
+    "nodesecurity",
+    "api"
+  ],
+  "author": "nodesecurity.io/contributors",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nodesecurity/api/issues"
+  }
+}
