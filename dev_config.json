@@ -1,0 +1,17 @@
+{
+  "session": {
+    "secret": "nodesec"
+  },
+  "mongo": {
+    "connect_string": "mongodb://127.0.0.1:27017/nodesecurity-dev"
+  },
+  "bucker": {
+    "app": "logs/app.log",
+    "access": "logs/access.log",
+    "console": true
+  },
+  "githubApi": {
+    "type": "oauth",
+    "token": "REPLACE-ME-WITH-YOUR-OAUTH-TOKEN"
+  }
+}
