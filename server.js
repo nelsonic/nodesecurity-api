@@ -26,7 +26,7 @@ server.route({
     }
 });
 
-// GET /user/{id}
+// GET /user/{user_id}
 server.route({
     method: 'GET',
     path: '/user/{user_id}',
@@ -79,5 +79,33 @@ server.route({
         }
     }
 });
+
+// DELETE /user/{user_id}
+server.route({
+    method: 'DELETE',
+    path: '/user/{user_id}',
+    handler: function (request) {
+        User.remove({_id: request.params.user_id}, function (err, user) {
+            if (err)
+                return request.reply(Hapi.error.internal('User delete failed', err));
+            request.reply('User deleted');
+        });
+    },
+    config: {
+        validate: {
+            path: {
+                user_id: Hapi.types.String().required().regex(/[a-zA-Z0-9]{24}/)
+            }
+        },
+        plugins: {
+            sarge: {
+                role: 'admin'
+            }
+        }
+    }
+});
+
+// UPDATE /user/{user_id}
+
 
 server.start();
