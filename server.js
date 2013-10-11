@@ -112,7 +112,7 @@ server.route({
     handler: function (request) {
         User.findOne({_id: request.params.user_id}).select('-password').exec(function (err, user) {
             if (err)
-                return request.reply(Hapi.error.notFound(Error("test")));
+                return request.reply(Hapi.error.notFound(Error("User not found")));
             Object.keys(request.payload).forEach(function (key) {
                 user[key] = request.payload[key];
             });
@@ -136,6 +136,55 @@ server.route({
     }
 });
 
+// Roles Index
+server.route({
+    method: 'GET',
+    path: '/user/{user_id}/roles',
+    handler: function (request) {
+        Role.find({_creator: request.params.user_id}, function (err, roles) {
+            if (err)
+                return request.reply(Hapi.error.notFound(Error("asdf")));
+            request.reply(roles);
+        });
+    },
+    config: {
+        plugins: {
+            sarge: {
+                role: 'admin'
+            }
+        }
+    }
+});
+
+// Create route
+server.route({
+    method: 'POST',
+    path: '/user/{user_id}/role',
+    handler: function (request) {
+        request.payload._creator = request.params.user_id;
+        Role.find(request.payload, function (err, role) {
+            if (role && role.length > 0)
+                return request.reply().code(201);
+            Role.create(request.payload, function (err, role) {
+                if (err)
+                    return request.reply(Hapi.error.internal({message: "error creating role"}));
+                request.reply(role);
+            });
+        });
+    },
+    config: {
+        validate: {
+            payload: {
+                role: Hapi.types.String().required(),
+            }
+        },
+        plugins: {
+            sarge: {
+                role: 'admin'
+            }
+        }
+    }
+});
 
 
 
