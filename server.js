@@ -88,7 +88,7 @@ server.route({
         User.remove({_id: request.params.user_id}, function (err, user) {
             if (err)
                 return request.reply(Hapi.error.internal('User delete failed', err));
-            request.reply('User deleted');
+            request.reply();
         });
     },
     config: {
@@ -105,7 +105,39 @@ server.route({
     }
 });
 
-// UPDATE /user/{user_id}
+// PUT /user/{user_id}
+server.route({
+    method: 'PUT',
+    path: '/user/{user_id}',
+    handler: function (request) {
+        User.findOne({_id: request.params.user_id}).select('-password').exec(function (err, user) {
+            if (err)
+                return request.reply(Hapi.error.notFound(Error("test")));
+            Object.keys(request.payload).forEach(function (key) {
+                user[key] = request.payload[key];
+            });
+            user.save();
+            request.reply(user);
+        });
+    },
+    config: {
+        validate: {
+            payload: {
+                first_name: Hapi.types.String(),
+                last_name: Hapi.types.String(),
+                username: Hapi.types.String().email(),
+            }
+        },
+        plugins: {
+            sarge: {
+                role: 'admin'
+            }
+        }
+    }
+});
+
+
+
 
 
 server.start();
