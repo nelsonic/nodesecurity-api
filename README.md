@@ -1,4 +1,4 @@
-# API
+# API [![Dependency Status](https://david-dm.org/nodesecurity/api.png)](https://david-dm.org/nodesecurity/api)
 
 This is where the Node Security Project api is going to live.
 

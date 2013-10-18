@@ -1,6 +1,6 @@
 'use strict';
 
-var config = require('getconfig');
+var config = require('config');
 var logger = require('bucker').createLogger(config.bucker);
 
 var mongoose = require('../db.js').mongoose,
