@@ -1,6 +1,6 @@
 var Hapi = require('hapi');
-var config = require('getconfig');
-var server = new Hapi.Server('127.0.0.1', 3000);
+var config = require('config');
+var server = new Hapi.Server(config.host, config.port);
 var db = require('./db').mongoose;
 var User = require('./models/user');
 var Role = require('./models/role');
@@ -189,4 +189,6 @@ server.route({
 
 
 
-server.start();
+server.start(function () {
+    console.log('Server started at: ' + server.info.uri);
+});

@@ -19,6 +19,10 @@
         "exports",
         "console",
         "Buffer",
-        "module"
+        "module",
+        "describe",
+        "before",
+        "after",
+        "it"
     ]
 }
