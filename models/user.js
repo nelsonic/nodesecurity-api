@@ -16,9 +16,8 @@ var UserSchema = new Schema({
     last_name:  {type: String, validate: validator.name},
     password:   {type: String, required: true, validate: validator.password},
     username:   {type: String, unique: true, required: true, validate: validator.email},
-    roles: [{type: Schema.Types.ObjectId, ref: 'Role'}]
+    roles: [String]
 });
-//}, { _id: false });
 
 UserSchema.statics.findByUserName = function (username, callback) {
     this.find({ username: new RegExp(username, 'i') }, callback);
@@ -38,7 +37,6 @@ UserSchema.path('password').set(function (value) {
 });
 
 var UserModel = mongoose.model('User', UserSchema);
-module.exports = UserModel;
 
 var User = function () {};
 
@@ -62,21 +60,6 @@ User.prototype.create = function (item, callback) {
     newUser.save(function (err, user) {
         callback(err, user);
     });
-
-    /*
-    UserModel.findByUserName(newUser.username, function (err, user) {
-        if (err) {
-            logger.error('database error');
-            callback(true, err);
-        } else if (user.length > 0) {
-            callback(true, 'Duplicate User');
-        } else {
-            newUser.save(function (err, user) {
-                callback(err, user);
-            });
-        }
-    })t;
-    */
 };
 
 User.prototype.update = function (username, item, callback) {
@@ -96,7 +79,4 @@ User.prototype.update = function (username, item, callback) {
     });
 };
 
-
-//module.exports = function () {
-//    return new User();
-//}()
+module.exports = UserModel;
