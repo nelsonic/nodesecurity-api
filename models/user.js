@@ -16,7 +16,7 @@ var UserSchema = new Schema({
     last_name:  {type: String, validate: validator.name},
     password:   {type: String, required: true, validate: validator.password},
     username:   {type: String, unique: true, required: true, validate: validator.email},
-    roles: [String]
+    admin: {type: Boolean, default: false}
 });
 
 UserSchema.statics.findByUserName = function (username, callback) {
