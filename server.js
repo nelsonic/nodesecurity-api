@@ -3,7 +3,26 @@ var config = require('config');
 var server = new Hapi.Server(config.host, config.port);
 var db = require('./db').mongoose;
 var User = require('./models/user');
-var Role = require('./models/role');
+var bcrypt = require('bcrypt');
+
+
+function validate(username, password, callback) {
+    User.findOne({username: username}, function (err, user) {
+        if (!user) {
+            return callback(null, false);
+        }
+
+        bcrypt.compare(password, user.password, function (err, isValid) {
+            callback(err, isValid, { id: user.id, user: user });
+        });
+    });
+}
+
+
+server.auth('simple', {
+    scheme: 'basic',
+    validateFunc: validate
+});
 
 // USER ROUTES
 // GET /users
@@ -11,6 +30,11 @@ server.route({
     method: 'GET',
     path: '/users',
     handler: function (request) {
+        var roles = Hapi.utils.intersect(request.route.app.roles, request.auth.credentials.user.roles);
+        if (roles.length === 0) {
+            return request.reply(Hapi.error.unauthorized('go away'));
+        }
+
         User.find().select('-password').exec(function (err, users) {
             if (err)
                 return request.reply(Hapi.error.internal('User lookup failed', err));
@@ -18,10 +42,11 @@ server.route({
         });
     },
     config: {
-        plugins: {
-            sarge: {
-                role: 'admin'
-            }
+        auth: 'simple',
+        app: {
+            roles: [
+                'admin',
+            ]
         }
     }
 });
@@ -135,59 +160,6 @@ server.route({
         }
     }
 });
-
-// Roles Index
-server.route({
-    method: 'GET',
-    path: '/user/{user_id}/roles',
-    handler: function (request) {
-        Role.find({_creator: request.params.user_id}, function (err, roles) {
-            if (err)
-                return request.reply(Hapi.error.notFound(Error("asdf")));
-            request.reply(roles);
-        });
-    },
-    config: {
-        plugins: {
-            sarge: {
-                role: 'admin'
-            }
-        }
-    }
-});
-
-// Create route
-server.route({
-    method: 'POST',
-    path: '/user/{user_id}/role',
-    handler: function (request) {
-        request.payload._creator = request.params.user_id;
-        Role.find(request.payload, function (err, role) {
-            if (role && role.length > 0)
-                return request.reply().code(201);
-            Role.create(request.payload, function (err, role) {
-                if (err)
-                    return request.reply(Hapi.error.internal({message: "error creating role"}));
-                request.reply(role);
-            });
-        });
-    },
-    config: {
-        validate: {
-            payload: {
-                role: Hapi.types.String().required(),
-            }
-        },
-        plugins: {
-            sarge: {
-                role: 'admin'
-            }
-        }
-    }
-});
-
-
-
 
 server.start(function () {
     console.log('Server started at: ' + server.info.uri);
