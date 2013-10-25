@@ -30,8 +30,7 @@ server.route({
     method: 'GET',
     path: '/users',
     handler: function (request) {
-        var roles = Hapi.utils.intersect(request.route.app.roles, request.auth.credentials.user.roles);
-        if (roles.length === 0) {
+        if (!request.auth.credentials.user.admin) {
             return request.reply(Hapi.error.unauthorized('go away'));
         }
 
@@ -43,11 +42,6 @@ server.route({
     },
     config: {
         auth: 'simple',
-        app: {
-            roles: [
-                'admin',
-            ]
-        }
     }
 });
 
@@ -59,7 +53,12 @@ server.route({
         User.findOne({_id: request.params.user_id}).select('-password').exec(function (err, user) {
             if (err)
                 return request.reply(Hapi.error.internal('User lookup failed', err));
-            request.reply(user);
+
+            if (request.auth.credentials.user.admin || user.username === request.auth.credentials.user.username) {
+                request.reply(user);
+            } else {
+                request.reply(Hapi.error.unauthorized('go away'));
+            }
         });
     },
     config: {
@@ -68,11 +67,7 @@ server.route({
                 user_id: Hapi.types.String().required().regex(/[a-zA-Z0-9]{24}/)
             }
         },
-        plugins: {
-            sarge: {
-                role: 'admin'
-            }
-        }
+        auth: 'simple'
     }
 });
 
@@ -97,11 +92,7 @@ server.route({
                 password: Hapi.types.String().required()
             }
         },
-        plugins: {
-            sarge: {
-                role: 'admin'
-            }
-        }
+        auth: 'simple'
     }
 });
 
@@ -122,11 +113,7 @@ server.route({
                 user_id: Hapi.types.String().required().regex(/[a-zA-Z0-9]{24}/)
             }
         },
-        plugins: {
-            sarge: {
-                role: 'admin'
-            }
-        }
+        auth: 'simple'
     }
 });
 
@@ -153,13 +140,12 @@ server.route({
                 username: Hapi.types.String().email(),
             }
         },
-        plugins: {
-            sarge: {
-                role: 'admin'
-            }
-        }
+        auth: 'simple'
     }
 });
+
+// TODO: Route to make a user an admin
+// TODO: Route to change user password
 
 server.start(function () {
     console.log('Server started at: ' + server.info.uri);
