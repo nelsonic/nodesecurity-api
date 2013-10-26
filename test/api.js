@@ -15,9 +15,9 @@ describe("Node Security API", function () {
      * Before all tests in this suite, start a test server and wipe the DB
      */
     before(function (done) {
-        testServer.start(function (er) {
+        testServer.wipe(function (er) {
             if (er) throw er;
-            testServer.wipe(function (er) {
+            testServer.start(function (er) {
                 if (er) throw er;
                 console.log('Testing API at', apiUrl);
                 done();
@@ -57,8 +57,9 @@ describe("Node Security API", function () {
                     sendImmediately: true
                 }
             }, function (err, response, body) {
-                assert.ifError(body);
+                assert.ifError(err);
                 assert.equal(response.statusCode, 200); 
+                done();
             });
         });
     });

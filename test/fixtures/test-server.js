@@ -54,6 +54,7 @@ module.exports = {
      * Wipe the test server's database
      */
     wipe: function (cb) {
-        User.remove({}, cb);
+        //User.remove({}, cb);
+        cb();
     }
 };
