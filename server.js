@@ -4,6 +4,7 @@ var server = new Hapi.Server(config.host, config.port);
 var db = require('./db').mongoose;
 var User = require('./models/user');
 var bcrypt = require('bcrypt');
+var logger = require('bucker').createLogger(config.bucker);
 
 
 function validate(username, password, callback) {
@@ -77,6 +78,10 @@ server.route({
     method: 'POST',
     path: '/user',
     handler: function (request) {
+        if (!request.auth.credentials.user.admin) {
+            return request.reply(Hapi.error.unauthorized('go away'));
+        }
+
         User.create(request.payload, function (err, user) {
             if (err)
                 return request.reply(Hapi.error.internal('User creation failed', err));

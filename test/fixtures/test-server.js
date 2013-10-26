@@ -30,8 +30,16 @@ module.exports = {
             return cb(new Error("Failed to start test API server"));
         }
 
+        // Create a default admin
+        User.create({
+            username: 'a@b.com',
+            password: 'letmein',
+            admin: true
+        }, function (err, user) {
+            setTimeout(function () { cb(); }, 1000);
+        });
+
         // Give the server a second to come up
-        setTimeout(function () { cb(); }, 1000);
     },
     /**
      * Stop the currently started test API server
