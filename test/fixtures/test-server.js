@@ -32,7 +32,7 @@ module.exports = {
 
         // Create a default admin
         User.create({
-            username: 'a@b.com',
+            username: 'admin@nodesecurity.io',
             password: 'letmein',
             admin: true
         }, function (err, user) {
@@ -54,7 +54,6 @@ module.exports = {
      * Wipe the test server's database
      */
     wipe: function (cb) {
-        //User.remove({}, cb);
-        cb();
+        User.remove({}, cb);
     }
 };

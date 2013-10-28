@@ -1,6 +1,6 @@
 var Hapi = require('hapi');
 var config = require('config');
-var server = new Hapi.Server(config.host, config.port);
+var server = new Hapi.Server(config.host, config.port, config.hapi);
 var db = require('./db').mongoose;
 var User = require('./models/user');
 var bcrypt = require('bcrypt');
@@ -24,6 +24,7 @@ server.auth('simple', {
     scheme: 'basic',
     validateFunc: validate
 });
+
 
 // USER ROUTES
 // GET /users
@@ -78,14 +79,17 @@ server.route({
     method: 'POST',
     path: '/user',
     handler: function (request) {
+        logger.debug('POST /user ');
         if (!request.auth.credentials.user.admin) {
             return request.reply(Hapi.error.unauthorized('go away'));
         }
 
         User.create(request.payload, function (err, user) {
-            if (err)
-                return request.reply(Hapi.error.internal('User creation failed', err));
-            request.reply('User created');
+            if (err) {
+                logger.error("User creation failed " + err);
+                return request.reply(Hapi.error.internal(err));
+            }
+            request.reply().code(201);
         });
     },
     config: {
@@ -155,3 +159,4 @@ server.route({
 server.start(function () {
     console.log('Server started at: ' + server.info.uri);
 });
+
