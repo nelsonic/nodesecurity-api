@@ -267,7 +267,11 @@ describe("Node Security API", function () {
                     pass: user1.password,
                     sendImmediately: true
                 },
-                json: {first_name: "user1"}
+                json: {
+                    first_name: "user1", 
+                    last_name: "last",
+                    username: "user1@nodesecurity.io"
+                }
             }, function (err, response, body) {
                 assert.ifError(err);
                 assert.equal(response.statusCode, 200);
