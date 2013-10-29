@@ -110,9 +110,15 @@ server.route({
     method: 'DELETE',
     path: '/user/{user_id}',
     handler: function (request) {
+        // Only admin can delete
+        if (!request.auth.credentials.user.admin) {
+            return request.reply(Hapi.error.unauthorized('go away'));
+        }
+
         User.remove({_id: request.params.user_id}, function (err, user) {
-            if (err)
+            if (err) {
                 return request.reply(Hapi.error.internal('User delete failed', err));
+            }
             request.reply();
         });
     },

@@ -279,15 +279,44 @@ describe("Node Security API", function () {
             });
         });
     });
+    
+    describe("DELETE /user/{id}", function () {
+        it('Should disallow public access', function (done) {
+            request({
+                method: 'DELETE',
+                url: apiUrl + '/user/' + user1._id
+            }, function (err, response, body) {
+                assert.ifError(err);
+                assert.equal(response.statusCode, 401);
+                done();
+            });
+        });
+    });
+
+    describe("DELETE /user/{id}", function () {
+        it('Should disallow user access', function (done) {
+            request({
+                method: 'DELETE',
+                url: apiUrl + '/user/' + user1._id,
+                auth: {
+                    user: user1.username,
+                    pass: user1.password,
+                    sendImmediately: true
+                }
+            }, function (err, response, body) {
+                assert.ifError(err);
+                assert.equal(response.statusCode, 401);
+                done();
+            });
+        });
+    });
 
 
-    // NOT DONE
-    /*
     describe("DELETE /user/{id}", function () {
         it('Should allow admin access', function (done) {
             request({
-                method: 'GET',
-                url: apiUrl + '/users',
+                method: 'DELETE',
+                url: apiUrl + '/user/' + user1._id,
                 auth: {
                     user: admin.username,
                     pass: admin.password,
@@ -296,10 +325,14 @@ describe("Node Security API", function () {
             }, function (err, response, body) {
                 assert.ifError(err);
                 assert.equal(response.statusCode, 200);
-                done();
+                // Make sure it doesn't exist
+                User.find({username: user1.username}, function (err, user) {
+                    assert.ifError(err);
+                    assert.strictEqual(0, user.length);
+                    done();
+                });
             });
         });
     });
-*/
-    
+
 });
