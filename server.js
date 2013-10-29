@@ -89,7 +89,7 @@ server.route({
                 logger.error("User creation failed " + err);
                 return request.reply(Hapi.error.internal(err));
             }
-            request.reply().code(201);
+            request.reply({_id: user.id}).code(201);
         });
     },
     config: {
@@ -134,11 +134,16 @@ server.route({
         User.findOne({_id: request.params.user_id}).select('-password').exec(function (err, user) {
             if (err)
                 return request.reply(Hapi.error.notFound(Error("User not found")));
-            Object.keys(request.payload).forEach(function (key) {
-                user[key] = request.payload[key];
-            });
-            user.save();
-            request.reply(user);
+
+            if (request.auth.credentials.user.admin || user.username === request.auth.credentials.user.username) {
+                Object.keys(request.payload).forEach(function (key) {
+                    user[key] = request.payload[key];
+                });
+                user.save();
+                request.reply(user);
+            } else {
+                request.reply(Hapi.error.unauthorized("go away"));
+            }
         });
     },
     config: {
