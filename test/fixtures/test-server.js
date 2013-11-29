@@ -1,5 +1,6 @@
 var spawn = require('child_process').spawn;
 var User = require('../../models/user');
+var admin = require('./logins/admin');
 
 var serverProc = null;
 
@@ -32,8 +33,8 @@ module.exports = {
 
         // Create a default admin
         User.create({
-            username: 'admin@nodesecurity.io',
-            password: 'letmein',
+            username: admin.username,
+            password: admin.password,
             admin: true
         }, function (err, user) {
             setTimeout(function () { cb(); }, 1000);

@@ -24,6 +24,7 @@ server.auth('simple', {
 
 // REST API routes
 require('./routes/user')(server);
+require('./routes/aoi')(server);
 
 server.start(function () {
     console.log('Server started at: ' + server.info.uri);
