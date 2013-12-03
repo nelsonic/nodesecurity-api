@@ -1,4 +1,4 @@
-# API [![Dependency Status](https://david-dm.org/nodesecurity/nodesecurity-api.png)](https://david-dm.org/nodesecurity/nodesecurity-api)
+# API [![Build Status](https://travis-ci.org/nodesecurity/nodesecurity-api.png)](https://travis-ci.org/nodesecurity/nodesecurity-api) [![Dependency Status](https://david-dm.org/nodesecurity/nodesecurity-api.png)](https://david-dm.org/nodesecurity/nodesecurity-api)
 
 This is where the Node Security Project api is going to live.
 
@@ -13,13 +13,13 @@ Pull requests are appreciated and contributors will be attributed at https://nod
 1. Plugin events created
 1. Area of Interest generated
 1. Area of Interest validated
-1. 
+1.
 
 
 ## Feature thoughts and considerations
 
 - API should be decoupled from the website and other clients
-- 
+-
 
 ### Users
   - Email
@@ -31,7 +31,7 @@ Pull requests are appreciated and contributors will be attributed at https://nod
   - User
 
 ### Plugin Event
-A plugin event is a paper trail that determines if a particular pattern was run against a particular module and a boolean result if something was found or not. 
+A plugin event is a paper trail that determines if a particular pattern was run against a particular module and a boolean result if something was found or not.
 
 - Points to a area of interest if true
 - Can't be deleted
