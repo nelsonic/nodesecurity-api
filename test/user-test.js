@@ -5,22 +5,11 @@ var testServer = require('./fixtures/test-server');
 var User = require('../models/user');
 var apiUrl = 'http://' + config.host + ':' + config.port;
 
-var admin = {
-    username: 'admin@nodesecurity.io',
-    password: 'letmein'
-};
+var admin = require('./fixtures/logins/admin');
+var user1 = require('./fixtures/logins/user1');
+var user2 = require('./fixtures/logins/user2');
 
-var user1 = {
-    username: 'user@nodesecurity.io',
-    password: 'letmein'
-};
-
-var user2 = {
-    username: 'other@nodesecurity.io',
-    password: 'letmein'
-};
-
-describe("Node Security API", function () {
+describe("Node Security API - user", function () {
 
     /**
      * Before all tests in this suite, start a test server and wipe the DB
@@ -87,7 +76,7 @@ describe("Node Security API", function () {
     });
 
     describe("POST /user", function () {
-        it('should dissalow regular user from creating a user', function (done) {
+        it('should disallow regular user from creating a user', function (done) {
             request({
                 method: 'POST',
                 url: apiUrl + '/user',
@@ -218,7 +207,7 @@ describe("Node Security API", function () {
                 }
             }, function (err, response, body) {
                 assert.ifError(err);
-                assert.equal(response.statusCode, 200); 
+                assert.equal(response.statusCode, 200);
                 done();
             });
         });
@@ -247,7 +236,7 @@ describe("Node Security API", function () {
                     user: user2.username,
                     pass: user2.password,
                     sendImmediately: true
-                }, 
+                },
                 json: {first_name: "user1"}
             }, function (err, response, body) {
                 assert.ifError(err);
@@ -268,7 +257,7 @@ describe("Node Security API", function () {
                     sendImmediately: true
                 },
                 json: {
-                    first_name: "user1", 
+                    first_name: "user1",
                     last_name: "last",
                     username: "user1@nodesecurity.io"
                 }
@@ -279,7 +268,7 @@ describe("Node Security API", function () {
             });
         });
     });
-    
+
     describe("DELETE /user/{id}", function () {
         it('Should disallow public access', function (done) {
             request({
