@@ -38,45 +38,4 @@ UserSchema.path('password').set(function (value) {
 
 var UserModel = mongoose.model('User', UserSchema);
 
-var User = function () {};
-
-User.prototype.read = function (item, callback) {
-    if (item) {
-        UserModel.findOne(item, callback);
-    } else {
-        UserModel.find().sort({ username: -1 }).exec(callback);
-    }
-};
-
-User.prototype.del = function (item, callback) {
-    if (item) {
-        UserModel.remove(item, callback);
-    }
-};
-
-User.prototype.create = function (item, callback) {
-    var newUser = new UserModel(item);
-    newUser.set('password', item.password);
-    newUser.save(function (err, user) {
-        callback(err, user);
-    });
-};
-
-User.prototype.update = function (username, item, callback) {
-
-    // add stuff from #577
-    if (!Object.prototype.hasOwnProperty.call(item, 'password') || !item.password) {
-        delete item.password;
-    }
-
-    UserModel.findOne({ username: username }, function (err, user) {
-        ['username', 'first_name', 'last_name', 'password'].forEach(function (field) {
-            if (typeof item[field] !== 'undefined') {
-                user[field] = item[field];
-            }
-        });
-        user.save(callback);
-    });
-};
-
 module.exports = UserModel;
