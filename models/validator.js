@@ -11,7 +11,8 @@ exports.user = {
     email: [validate('isEmail'), validate('notEmpty')],
     name: [validate('isAlphanumeric'), validate('notEmpty')],
     password: [validate('notEmpty')],
-    username: [validate('regex', /^[a-zA-Z0-9\.\-_]+$/), validate('notEmpty')]
+    username: [validate('regex', /^[a-zA-Z0-9\.\-_]+$/), validate('notEmpty')],
+    role: [validate('notEmpty')]
 };
 
 exports.generateErrorMessage = function (error) {

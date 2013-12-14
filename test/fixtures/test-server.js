@@ -35,7 +35,7 @@ module.exports = {
         User.create({
             username: admin.username,
             password: admin.password,
-            admin: true
+            role: admin.role
         }, function (err, user) {
             setTimeout(function () { cb(); }, 1000);
         });

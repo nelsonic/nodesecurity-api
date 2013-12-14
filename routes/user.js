@@ -31,7 +31,7 @@ module.exports = function (server) {
             auth: 'simple',
             plugins: {
                 sarge: {
-                    roles: ['admin']
+                    roles: ['admin', 'user']
                 }
             }
         }
@@ -49,7 +49,8 @@ module.exports = function (server) {
                     first_name: Hapi.types.String(),
                     last_name: Hapi.types.String(),
                     username: Hapi.types.String().required().email(),
-                    password: Hapi.types.String().required()
+                    password: Hapi.types.String().required(),
+                    role: Hapi.types.String().required()
                 }
             },
             auth: 'simple',
@@ -98,7 +99,7 @@ module.exports = function (server) {
             auth: 'simple',
             plugins: {
                 sarge: {
-                    roles: ['admin']
+                    roles: ['admin','user']
                 }
             }
         }

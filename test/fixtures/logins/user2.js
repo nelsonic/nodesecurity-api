@@ -1,4 +1,5 @@
 module.exports = {
     username: 'other@nodesecurity.io',
-    password: 'letmein'
+    password: 'letmein',
+    role: 'user'
 };

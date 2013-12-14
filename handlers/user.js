@@ -27,7 +27,7 @@ exports.get = function (request) {
             return request.reply(self.hapi.error.internal('User lookup failed', err));
         }
 
-        if (request.auth.credentials.user.admin || user.username === request.auth.credentials.user.username) {
+        if (request.auth.credentials.role === 'admin' || user.username === request.auth.credentials.user.username) {
             request.reply(user);
         } else {
             request.reply(self.hapi.error.unauthorized('go away'));
@@ -42,9 +42,6 @@ exports.create = function (request) {
     var self = this;
 
     logger.debug('POST /user ');
-    if (!request.auth.credentials.user.admin) {
-        return request.reply(self.hapi.error.unauthorized('go away'));
-    }
 
     User.create(request.payload, function (err, user) {
         if (err) {
@@ -66,7 +63,7 @@ exports.update = function (request) {
             return request.reply(self.hapi.error.notFound(Error("User not found")));
         }
 
-        if (request.auth.credentials.user.admin || user.username === request.auth.credentials.user.username) {
+        if (request.auth.credentials.role === 'admin' || user.username === request.auth.credentials.user.username) {
             Object.keys(request.payload).forEach(function (key) {
                 user[key] = request.payload[key];
             });
@@ -83,11 +80,6 @@ exports.update = function (request) {
  */
 exports.remove = function (request) {
     var self = this;
-
-    // Only admin can delete
-    if (!request.auth.credentials.user.admin) {
-        return request.reply(self.hapi.error.unauthorized('go away'));
-    }
 
     User.remove({_id: request.params.user_id}, function (err, user) {
         if (err) {
