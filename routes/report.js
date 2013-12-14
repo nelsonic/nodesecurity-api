@@ -1,6 +1,5 @@
 var Hapi = require('hapi');
-var config = require('config');
-var logger = require('bucker').createLogger(config.bucker, module);
+var handlers = require('../handlers/report.js');
 
 module.exports = function (server) {
     // GET /reports/{module_name}/{module_version}
@@ -8,17 +7,7 @@ module.exports = function (server) {
     server.route({
         method: 'GET',
         path: '/reports/{module_name}/{module_version}',
-        handler: function (request) {
-            logger.debug('GET /reports/{module_name}/{module_version}');
-
-            var moduleName = request.params.module_name;
-            var moduleVersion = request.params.module_version;
-
-            // TODO: Get published vulnerability reports for this module@version
-            // TODO: Filter list: admins get everything, public only gets published vulnerability reports
-
-            request.reply(Hapi.error.notImplemented());
-        },
+        handler: handlers.get,
         config: {
             validate: {
                 path: {
@@ -35,10 +24,7 @@ module.exports = function (server) {
     server.route({
         method: 'POST',
         path: '/report',
-        handler: function (request) {
-            // TODO: Save new report
-            request.reply(Hapi.error.notImplemented());
-        },
+        handler: handlers.create,
         config: {
             validate: {
                 payload: {
@@ -57,13 +43,7 @@ module.exports = function (server) {
     server.route({
         method: 'PUT',
         path: '/report/{report_id}',
-        handler: function (request) {
-            var reportId = request.params.report_id;
-
-            // TODO: Save updated report
-
-            request.reply(Hapi.error.notImplemented());
-        },
+        handler: handlers.update,
         config: {
             validate: {
                 path: {

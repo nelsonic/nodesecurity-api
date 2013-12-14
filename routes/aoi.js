@@ -1,6 +1,5 @@
 var Hapi = require('hapi');
-var config = require('config');
-var logger = require('bucker').createLogger(config.bucker, module);
+var handlers = require('../handlers/aoi.js');
 
 module.exports = function (server) {
     // GET /aoi/{module_name}/{module_version}
@@ -8,17 +7,7 @@ module.exports = function (server) {
     server.route({
         method: 'GET',
         path: '/aoi/{module_name}/{module_version}',
-        handler: function (request) {
-            logger.debug('GET /aoi/{module_name}/{module_version}');
-
-            var moduleName = request.params.module_name;
-            var moduleVersion = request.params.module_version;
-
-            // TODO: Get AOIs for this module@version
-            // TODO: Filter list: admins get everything, public only gets AOIs published as part of vulnerability report
-
-            request.reply(Hapi.error.notImplemented());
-        },
+        handler: handlers.get,
         config: {
             validate: {
                 path: {
@@ -35,17 +24,7 @@ module.exports = function (server) {
     server.route({
         method: 'POST',
         path: '/aoi/{module_name}/{module_version}',
-        handler: function (request) {
-            logger.debug('POST /aoi/{module_name}/{module_version}');
-
-            var moduleName = request.params.module_name;
-            var moduleVersion = request.params.module_version;
-
-            // TODO: Can anyone create an AOI?
-            // TODO: Save new AOI
-
-            request.reply(Hapi.error.notImplemented());
-        },
+        handler: handlers.create,
         config: {
             validate: {
                 path: {
