@@ -13,10 +13,10 @@ var ObjectId = Schema.ObjectId;
 
 var UserSchema = new Schema({
     first_name: {type: String, validate: validator.name},
-    last_name:  {type: String, validate: validator.name},
-    password:   {type: String, required: true, validate: validator.password},
-    username:   {type: String, unique: true, required: true, validate: validator.email},
-    admin: {type: Boolean, default: false}
+    last_name: {type: String, validate: validator.name},
+    password: {type: String, required: true, validate: validator.password},
+    username: {type: String, unique: true, required: true, validate: validator.email},
+    role: {type: String}
 });
 
 UserSchema.statics.findByUserName = function (username, callback) {
