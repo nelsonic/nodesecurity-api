@@ -1,25 +1,12 @@
 var Hapi = require('hapi');
-var User = require('../models/user');
-var config = require('config');
-var logger = require('bucker').createLogger(config.bucker, module);
+var handlers = require('../handlers/user');
 
 module.exports = function (server) {
     // GET /users
     server.route({
         method: 'GET',
         path: '/users',
-        handler: function (request) {
-            if (!request.auth.credentials.user.admin) {
-                return request.reply(Hapi.error.unauthorized('go away'));
-            }
-
-            User.find().select('-password').exec(function (err, users) {
-                if (err) {
-                    return request.reply(Hapi.error.internal('User lookup failed', err));
-                }
-                request.reply(users);
-            });
-        },
+        handler: handlers.getBatch,
         config: {
             auth: 'simple'
         }
@@ -29,19 +16,7 @@ module.exports = function (server) {
     server.route({
         method: 'GET',
         path: '/user/{user_id}',
-        handler: function (request) {
-            User.findOne({_id: request.params.user_id}).select('-password').exec(function (err, user) {
-                if (err) {
-                    return request.reply(Hapi.error.internal('User lookup failed', err));
-                }
-
-                if (request.auth.credentials.user.admin || user.username === request.auth.credentials.user.username) {
-                    request.reply(user);
-                } else {
-                    request.reply(Hapi.error.unauthorized('go away'));
-                }
-            });
-        },
+        handler: handlers.get,
         config: {
             validate: {
                 path: {
@@ -57,20 +32,7 @@ module.exports = function (server) {
     server.route({
         method: 'POST',
         path: '/user',
-        handler: function (request) {
-            logger.debug('POST /user ');
-            if (!request.auth.credentials.user.admin) {
-                return request.reply(Hapi.error.unauthorized('go away'));
-            }
-
-            User.create(request.payload, function (err, user) {
-                if (err) {
-                    logger.error("User creation failed " + err);
-                    return request.reply(Hapi.error.internal(err));
-                }
-                request.reply({_id: user.id}).code(201);
-            });
-        },
+        handler: handlers.create,
         config: {
             validate: {
                 payload: {
@@ -85,22 +47,11 @@ module.exports = function (server) {
     });
 
     // DELETE /user/{user_id}
+	// Remove user
     server.route({
         method: 'DELETE',
         path: '/user/{user_id}',
-        handler: function (request) {
-            // Only admin can delete
-            if (!request.auth.credentials.user.admin) {
-                return request.reply(Hapi.error.unauthorized('go away'));
-            }
-
-            User.remove({_id: request.params.user_id}, function (err, user) {
-                if (err) {
-                    return request.reply(Hapi.error.internal('User delete failed', err));
-                }
-                request.reply();
-            });
-        },
+        handler: handlers.remove,
         config: {
             validate: {
                 path: {
@@ -115,23 +66,7 @@ module.exports = function (server) {
     server.route({
         method: 'PUT',
         path: '/user/{user_id}',
-        handler: function (request) {
-            User.findOne({_id: request.params.user_id}).select('-password').exec(function (err, user) {
-                if (err) {
-                    return request.reply(Hapi.error.notFound(Error("User not found")));
-                }
-
-                if (request.auth.credentials.user.admin || user.username === request.auth.credentials.user.username) {
-                    Object.keys(request.payload).forEach(function (key) {
-                        user[key] = request.payload[key];
-                    });
-                    user.save();
-                    request.reply(user);
-                } else {
-                    request.reply(Hapi.error.unauthorized("go away"));
-                }
-            });
-        },
+        handler: handlers.update,
         config: {
             validate: {
                 payload: {
