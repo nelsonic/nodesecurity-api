@@ -15,6 +15,11 @@ module.exports = function (server) {
                     // TODO: Use `semver.valid` https://github.com/isaacs/node-semver#functions
                     module_version: Hapi.types.String().required()
                 }
+            },
+            plugins: {
+                sarge: {
+                    roles: ['user','admin']
+                }
             }
         }
     });
@@ -34,6 +39,11 @@ module.exports = function (server) {
                 },
                 payload: {
                     // TODO
+                }
+            },
+            plugins: {
+                sarge: {
+                    roles: ['admin']
                 }
             }
         }

@@ -8,7 +8,12 @@ module.exports = function (server) {
         path: '/users',
         handler: handlers.getBatch,
         config: {
-            auth: 'simple'
+            auth: 'simple',
+            plugins: {
+                sarge: {
+                    roles: ['admin']
+                }
+            }
         }
     });
 
@@ -23,7 +28,12 @@ module.exports = function (server) {
                     user_id: Hapi.types.String().required().regex(/[a-zA-Z0-9]{24}/)
                 }
             },
-            auth: 'simple'
+            auth: 'simple',
+            plugins: {
+                sarge: {
+                    roles: ['admin']
+                }
+            }
         }
     });
 
@@ -42,7 +52,12 @@ module.exports = function (server) {
                     password: Hapi.types.String().required()
                 }
             },
-            auth: 'simple'
+            auth: 'simple',
+            plugins: {
+                sarge: {
+                    roles: ['admin']
+                }
+            }
         }
     });
 
@@ -58,7 +73,12 @@ module.exports = function (server) {
                     user_id: Hapi.types.String().required().regex(/[a-zA-Z0-9]{24}/)
                 }
             },
-            auth: 'simple'
+            auth: 'simple',
+            plugins: {
+                sarge: {
+                    roles: ['admin']
+                }
+            }
         }
     });
 
@@ -75,7 +95,12 @@ module.exports = function (server) {
                     username: Hapi.types.String().email()
                 }
             },
-            auth: 'simple'
+            auth: 'simple',
+            plugins: {
+                sarge: {
+                    roles: ['admin']
+                }
+            }
         }
     });
 
