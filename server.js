@@ -1,7 +1,7 @@
 var Hapi = require('hapi');
 var config = require('config');
 var server = new Hapi.Server(config.host, config.port, config.hapi);
-var User = require('./models/user');
+//var User = require('./models/user');
 var bcrypt = require('bcrypt');
 var logger = require('bucker').createLogger(config.bucker);
 
@@ -17,15 +17,15 @@ function validate(username, password, callback) {
     });
 }
 
-server.auth('simple', {
-    scheme: 'basic',
-    validateFunc: validate
+server.pack.require('hapi-auth-basic', function (err) {
+
+    server.auth.strategy('simple', 'basic', { validateFunc: validate });
 });
 
 // REST API routes
-require('./routes/user')(server);
-require('./routes/aoi')(server);
-require('./routes/report')(server);
+//require('./routes/user')(server);
+//require('./routes/aoi')(server);
+//require('./routes/report')(server);
 
 server.start(function () {
     console.log('Server started at: ' + server.info.uri);
