@@ -2,10 +2,7 @@
   "host": "127.0.0.1",
   "port": 3001,
   "session": {
-    "ndsecret": "nodesec"
-  },
-  "mongo": {
-    "connect_string": "mongodb://127.0.0.1:27017/nodesecurity-dev"
+    "secret": "nodesec"
   },
   "bucker": {
     "app": "logs/app.log",
@@ -17,5 +14,11 @@
     "token": "REPLACE-ME-WITH-YOUR-OAUTH-TOKEN"
   },
   "hapi": {
+  },
+  "leveldb": {
+    "db": "./levelfuckingdb",
+    "options": {
+      "valueEncoding": "json"
+    }
   }
 }
