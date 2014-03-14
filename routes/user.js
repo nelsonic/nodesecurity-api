@@ -47,7 +47,7 @@ module.exports = function (server) {
     });
 
     // DELETE /user/{user_id}
-	// Remove user
+  // Remove user
     server.route({
         method: 'DELETE',
         path: '/user/{user_id}',

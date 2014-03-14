@@ -1,10 +1,11 @@
 var config = require('config');
 var logger = require('bucker').createLogger(config.bucker, module);
+var Hapi   = require('hapi');
 
 /**
  *	Get an AOI
  */
-exports.get = function (request) {
+exports.get = function (request, reply) {
 	var self = this;
 
 	logger.debug('GET /aoi/{module_name}/{module_version}');
@@ -15,13 +16,13 @@ exports.get = function (request) {
 	// TODO: Get AOIs for this module@version
 	// TODO: Filter list: admins get everything, public only gets AOIs published as part of vulnerability report
 
-	request.reply(self.hapi.error.notImplemented());
+	reply(Hapi.error.notImplemented());
 };
 
 /**
  *	Create an AOI
  */
-exports.create =  function (request) {
+exports.create =  function (request, reply) {
 	var self = this;
 
 	logger.debug('POST /aoi/{module_name}/{module_version}');
@@ -32,5 +33,5 @@ exports.create =  function (request) {
 	// TODO: Can anyone create an AOI?
 	// TODO: Save new AOI
 
-	request.reply(self.hapi.error.notImplemented());
+	reply(Hapi.error.notImplemented());
 };
