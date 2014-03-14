@@ -7,16 +7,16 @@ var apiUrl = 'http://' + config.host + ':' + config.port;
 var admin = require('./fixtures/logins/admin');
 var user1 = require('./fixtures/logins/user1');
 
-describe("Node Security API - vulnerability report", function () {
+describe('Node Security API - vulnerability report', function () {
 
     /**
      * Before all tests in this suite, start a test server and wipe the DB
      */
     before(function (done) {
         testServer.wipe(function (er) {
-            if (er) throw er;
+            if (er) { throw er; }
             testServer.start(function (er) {
-                if (er) throw er;
+                if (er) { throw er; }
                 console.log('Testing API at', apiUrl);
 
                 // Create user1 in the database
@@ -42,13 +42,13 @@ describe("Node Security API - vulnerability report", function () {
      */
     after(function (done) {
         testServer.stop(function (er) {
-            if (er) throw er;
+            if (er) { throw er; }
             delete user1._id;
             done();
         });
     });
 
-    describe("GET /reports/async/0.2.9", function () {
+    describe('GET /reports/async/0.2.9', function () {
         it('should return published reports', function (done) {
             request({
                 method: 'GET',
@@ -79,7 +79,7 @@ describe("Node Security API - vulnerability report", function () {
         });
     });
 
-    describe("POST /report", function () {
+    describe('POST /report', function () {
         it('should disallow unauthenticated users to create a report', function (done) {
             var report = {module_name: 'async', module_version: '0.2.9'};
             request({
@@ -132,7 +132,7 @@ describe("Node Security API - vulnerability report", function () {
         });
     });
 
-    describe("PUT /report/{report_id}", function () {
+    describe('PUT /report/{report_id}', function () {
         it('should disallow unauthenticated users to update a report', function (done) {
             var report = {module_name: 'async', module_version: '0.2.9'};
             request({

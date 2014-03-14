@@ -9,7 +9,7 @@ module.exports = {
      * Start a test API server to test against
      */
     start: function (cb) {
-        if (serverProc) return cb(new Error("API server already started"));
+        if (serverProc) { return cb(new Error('API server already started')); }
 
         var cwd = __dirname + '/../../';
 
@@ -28,7 +28,7 @@ module.exports = {
         });
 
         if (!serverProc || !serverProc.pid) {
-            return cb(new Error("Failed to start test API server"));
+            return cb(new Error('Failed to start test API server'));
         }
 
         // Create a default admin
@@ -46,7 +46,7 @@ module.exports = {
      * Stop the currently started test API server
      */
     stop: function (cb) {
-        if (!serverProc) return cb(new Error("API server not started"));
+        if (!serverProc) { return cb(new Error('API server not started')); }
         serverProc.kill();
         serverProc = null;
         cb();

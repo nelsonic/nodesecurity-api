@@ -3,7 +3,7 @@ var config  = require('config');
 var server  = new Hapi.Server(config.host, config.port, config.hapi);
 var User    = require('./models/user');
 var bcrypt  = require('bcrypt');
-var logger  = require('bucker').createLogger(config.bucker);
+// var logger  = require('bucker').createLogger(config.bucker);
 
 function validate(username, password, callback) {
     User.findOne({username: username}, function (err, user) {
@@ -18,10 +18,10 @@ function validate(username, password, callback) {
 }
 
 var plugins = {
-    'hapi-auth-basic':'hapi-auth-basic'
-}
+    'hapi-auth-basic': 'hapi-auth-basic'
+};
 
-server.pack.require(plugins, function(err) {
+server.pack.require(plugins, function (err) {
     if (err) {
         console.log('shit broke: ', err);
     }

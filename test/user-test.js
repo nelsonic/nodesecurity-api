@@ -9,16 +9,16 @@ var admin = require('./fixtures/logins/admin');
 var user1 = require('./fixtures/logins/user1');
 var user2 = require('./fixtures/logins/user2');
 
-describe("Node Security API - user", function () {
+describe('Node Security API - user', function () {
 
     /**
      * Before all tests in this suite, start a test server and wipe the DB
      */
     before(function (done) {
         testServer.wipe(function (er) {
-            if (er) throw er;
+            if (er) { throw er; }
             testServer.start(function (er) {
-                if (er) throw er;
+                if (er) { throw er; }
                 console.log('Testing API at', apiUrl);
                 done();
             });
@@ -30,13 +30,13 @@ describe("Node Security API - user", function () {
      */
     after(function (done) {
         testServer.stop(function (er) {
-            if (er) throw er;
+            if (er) { throw er; }
             done();
         });
     });
 
     // Users
-    describe("POST /user", function () {
+    describe('POST /user', function () {
         it('should disallow public access', function (done) {
             request({
                 method: 'POST',
@@ -55,7 +55,7 @@ describe("Node Security API - user", function () {
     });
 
     // Users
-    describe("POST /user", function () {
+    describe('POST /user', function () {
         it('should allow admin to create user', function (done) {
             request({
                 method: 'POST',
@@ -75,7 +75,7 @@ describe("Node Security API - user", function () {
         });
     });
 
-    describe("POST /user", function () {
+    describe('POST /user', function () {
         it('should disallow regular user from creating a user', function (done) {
             request({
                 method: 'POST',
@@ -95,7 +95,7 @@ describe("Node Security API - user", function () {
     });
 
     // Used for future tests (not really that useful of a test :)
-    describe("POST /user", function () {
+    describe('POST /user', function () {
         it('should allow admin to create second user', function (done) {
             request({
                 method: 'POST',
@@ -115,7 +115,7 @@ describe("Node Security API - user", function () {
         });
     });
 
-    describe("GET /user/{id}", function () {
+    describe('GET /user/{id}', function () {
         it('should disallow public access', function (done) {
             request({
                 url: apiUrl + '/user/' + user1._id
@@ -127,7 +127,7 @@ describe("Node Security API - user", function () {
         });
     });
 
-    describe("GET /user/{id}", function () {
+    describe('GET /user/{id}', function () {
         it('should allow admin access', function (done) {
             request({
                 url: apiUrl + '/user/' + user1._id,
@@ -146,7 +146,7 @@ describe("Node Security API - user", function () {
         });
     });
 
-    describe("GET /user/{id}", function () {
+    describe('GET /user/{id}', function () {
         it('should allow owner access', function (done) {
             request({
                 url: apiUrl + '/user/' + user1._id,
@@ -166,7 +166,7 @@ describe("Node Security API - user", function () {
     });
 
 
-    describe("GET /user/{id}", function () {
+    describe('GET /user/{id}', function () {
         it('should disallow other user access', function (done) {
             request({
                 url: apiUrl + '/user/' + user1._id,
@@ -185,7 +185,7 @@ describe("Node Security API - user", function () {
     });
 
 
-    describe("GET /users", function () {
+    describe('GET /users', function () {
         it('Should disallow public access', function (done) {
             request(apiUrl + '/users', function (err, response, body) {
                 assert.ifError(err);
@@ -195,7 +195,7 @@ describe("Node Security API - user", function () {
         });
     });
 
-    describe("GET /users", function () {
+    describe('GET /users', function () {
         it('Should allow admin access', function (done) {
             request({
                 method: 'GET',
@@ -213,7 +213,7 @@ describe("Node Security API - user", function () {
         });
     });
 
-    describe("PUT /user/{id}", function () {
+    describe('PUT /user/{id}', function () {
         it('should disallow public access', function (done) {
             request({
                 method: 'PUT',
@@ -227,7 +227,7 @@ describe("Node Security API - user", function () {
         });
     });
 
-    describe("PUT /user/{id}", function () {
+    describe('PUT /user/{id}', function () {
         it('should disallow other user access', function (done) {
             request({
                 method: 'PUT',
@@ -237,7 +237,7 @@ describe("Node Security API - user", function () {
                     pass: user2.password,
                     sendImmediately: true
                 },
-                json: {first_name: "user1"}
+                json: {first_name: 'user1'}
             }, function (err, response, body) {
                 assert.ifError(err);
                 assert.equal(response.statusCode, 401);
@@ -246,7 +246,7 @@ describe("Node Security API - user", function () {
         });
     });
 
-    describe("PUT /user/{id}", function () {
+    describe('PUT /user/{id}', function () {
         it('should allow owner access', function (done) {
             request({
                 method: 'PUT',
@@ -257,9 +257,9 @@ describe("Node Security API - user", function () {
                     sendImmediately: true
                 },
                 json: {
-                    first_name: "user1",
-                    last_name: "last",
-                    username: "user1@nodesecurity.io"
+                    first_name: 'user1',
+                    last_name: 'last',
+                    username: 'user1@nodesecurity.io'
                 }
             }, function (err, response, body) {
                 assert.ifError(err);
@@ -269,7 +269,7 @@ describe("Node Security API - user", function () {
         });
     });
 
-    describe("DELETE /user/{id}", function () {
+    describe('DELETE /user/{id}', function () {
         it('Should disallow public access', function (done) {
             request({
                 method: 'DELETE',
@@ -282,7 +282,7 @@ describe("Node Security API - user", function () {
         });
     });
 
-    describe("DELETE /user/{id}", function () {
+    describe('DELETE /user/{id}', function () {
         it('Should disallow user access', function (done) {
             request({
                 method: 'DELETE',
@@ -301,7 +301,7 @@ describe("Node Security API - user", function () {
     });
 
 
-    describe("DELETE /user/{id}", function () {
+    describe('DELETE /user/{id}', function () {
         it('Should allow admin access', function (done) {
             request({
                 method: 'DELETE',
