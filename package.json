@@ -29,7 +29,11 @@
     "bcrypt": "~0.7.7",
     "config": "~0.4.30",
     "hapi-auth-basic": "git://github.com/diasdavid/hapi-auth-basic",
-    "hapi": "^3.0.0"
+    "hapi": "^3.0.0",
+    "level": "^0.18.0",
+    "async": "^0.2.10",
+    "verymodel": "^1.8.0",
+    "verymodel-level": "^1.7.2"
   },
   "devDependencies": {
     "precommit-hook": "~0.3.8",

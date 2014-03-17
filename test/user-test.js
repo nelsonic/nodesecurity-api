@@ -2,7 +2,8 @@ var assert = require('assert');
 var request = require('request');
 var config = require('config');
 var testServer = require('./fixtures/test-server');
-var User = require('../models/user');
+// var store   = require('./../store')
+// var User    = store.models.User;
 var apiUrl = 'http://' + config.host + ':' + config.port;
 
 var admin = require('./fixtures/logins/admin');
@@ -61,7 +62,7 @@ describe('Node Security API - user', function () {
                 method: 'POST',
                 url: apiUrl + '/user',
                 auth: {
-                    user: admin.username,
+                    username: admin.username,
                     pass: admin.password,
                     sendImmediately: true
                 },

@@ -1,4 +1,5 @@
-var User = require('../models/user');
+var store   = require('./../store');
+var User    = store.models.User;
 var config = require('config');
 var logger = require('bucker').createLogger(config.bucker, module);
 var Hapi   = require('hapi');
@@ -7,13 +8,11 @@ var Hapi   = require('hapi');
  *	Get a list of users
  */
 exports.getBatch = function (request, reply) {
-	var self = this;
-
 	if (!request.auth.credentials.user.admin) {
 		return reply(Hapi.error.unauthorized('go away'));
 	}
 
-	User.find().select('-password').exec(function (err, users) {
+	User.all(function (err, users) {
 		if (err) {
 			return reply(Hapi.error.internal('User lookup failed', err));
 		}
@@ -25,9 +24,7 @@ exports.getBatch = function (request, reply) {
  *	Get one user
  */
 exports.get = function (request, reply) {
-	var self = this;
-
-	User.findOne({_id: request.params.user_id}).select('-password').exec(function (err, user) {
+	User.get(request.params.user_id, function (err, user) {
 		if (err) {
 			return reply(Hapi.error.internal('User lookup failed', err));
 		}
@@ -44,60 +41,72 @@ exports.get = function (request, reply) {
  *	Create a user
  */
 exports.create = function (request, reply) {
-	var self = this;
 
-	logger.debug('POST /user ');
 	if (!request.auth.credentials.user.admin) {
 		return reply(Hapi.error.unauthorized('go away'));
 	}
 
-	User.create(request.payload, function (err, user) {
+  console.log(request.payload);
+
+	var u = User.create(request.payload);
+
+	u.save(function (err) {
 		if (err) {
 			logger.error('User creation failed ' + err);
 			return reply(Hapi.error.internal(err));
 		}
-		reply({_id: user.id}).code(201);
+		reply({_id: u.id}).code(201);
 	});
 };
+
 
 /**
  *	Update a user
  */
 exports.update = function (request, reply) {
-	var self = this;
 
-	User.findOne({_id: request.params.user_id}).select('-password').exec(function (err, user) {
+	// User.findOne({_id: request.params.user_id}).select('-password').exec(function (err, user) {
+	User.get(request.params.user_id, function (err, user) {
 		if (err) {
 			return reply(Hapi.error.notFound(Error('User not found')));
 		}
 
 		if (request.auth.credentials.user.admin || user.username === request.auth.credentials.user.username) {
 			Object.keys(request.payload).forEach(function (key) {
+				console.log(request.payload);
 				user[key] = request.payload[key];
 			});
-			user.save();
-			reply(user);
+			user.save(function(err) {
+				console.log('USER',user);
+	     	reply(user);
+			});
 		} else {
 			reply(Hapi.error.unauthorized('go away'));
 		}
 	});
+
 };
 
 /**
  *	Remove a user
  */
 exports.remove = function (request, reply) {
-	var self = this;
 
 	// Only admin can delete
 	if (!request.auth.credentials.user.admin) {
 		return reply(Hapi.error.unauthorized('go away'));
 	}
 
-	User.remove({_id: request.params.user_id}, function (err, user) {
+	User.get(request.params.user_id, function (err, user) {
 		if (err) {
 			return reply(Hapi.error.internal('User delete failed', err));
 		}
-		reply();
+
+		user.delete(function (err) {
+			if (err) {
+				return reply(Hapi.error.internal('User delete failed', err));
+			}
+			reply();
+		});
 	});
 };

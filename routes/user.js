@@ -20,7 +20,7 @@ module.exports = function (server) {
         config: {
             validate: {
                 path: {
-                    user_id: Hapi.types.String().required().regex(/[a-zA-Z0-9]{24}/)
+                    user_id: Hapi.types.String().required()
                 }
             },
             auth: 'simple'
@@ -47,7 +47,7 @@ module.exports = function (server) {
     });
 
     // DELETE /user/{user_id}
-  // Remove user
+    // Remove user
     server.route({
         method: 'DELETE',
         path: '/user/{user_id}',
@@ -55,7 +55,7 @@ module.exports = function (server) {
         config: {
             validate: {
                 path: {
-                    user_id: Hapi.types.String().required().regex(/[a-zA-Z0-9]{24}/)
+                    user_id: Hapi.types.String().required()
                 }
             },
             auth: 'simple'
