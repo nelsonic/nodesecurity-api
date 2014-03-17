@@ -15,5 +15,5 @@ var u = User.create({
 u.password = admin.password;
 
 u.save(function (err) {
-  console.log('Admin stored');
+    console.log('Admin stored');
 });

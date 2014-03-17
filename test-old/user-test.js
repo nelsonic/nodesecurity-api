@@ -2,8 +2,8 @@ var assert = require('assert');
 var request = require('request');
 var config = require('config');
 var testServer = require('./fixtures/test-server');
-// var store   = require('./../store')
-// var User    = store.models.User;
+var store   = require('./../store');
+var User    = store.models.User;
 var apiUrl = 'http://' + config.host + ':' + config.port;
 
 var admin = require('./fixtures/logins/admin');

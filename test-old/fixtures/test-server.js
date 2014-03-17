@@ -42,7 +42,7 @@ module.exports = {
         //     admin: true
         // });
 
-        // u.save(function () {
+        // u.save(function (err) {
         //     setTimeout(function () { cb(); }, 1000);
         // });
 
@@ -61,7 +61,8 @@ module.exports = {
      * Wipe the test server's database
      */
     wipe: function (cb) {
+        console.log('Wipe has to be Manual');
         // User.remove({}, cb);
-        User.removeAll(cb);
+        // User.removeAll(cb);
     }
 };

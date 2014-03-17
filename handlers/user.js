@@ -46,7 +46,7 @@ exports.create = function (request, reply) {
 		return reply(Hapi.error.unauthorized('go away'));
 	}
 
-  console.log(request.payload);
+	console.log(request.payload);
 
 	var u = User.create(request.payload);
 
@@ -76,9 +76,8 @@ exports.update = function (request, reply) {
 				console.log(request.payload);
 				user[key] = request.payload[key];
 			});
-			user.save(function(err) {
-				console.log('USER',user);
-	     	reply(user);
+			user.save(function (err) {
+				reply(user);
 			});
 		} else {
 			reply(Hapi.error.unauthorized('go away'));
