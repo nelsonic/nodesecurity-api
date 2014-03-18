@@ -5,21 +5,20 @@ var store   = require('./../store');
 store.attachDB();
 var User    = store.models.User;
 var server  = new Hapi.Server();
-// var valid_no_vulns = require('./data/valid_no_vulns.json');
-// var valid_vulns = require('./data/valid_vulns.json');
-// var invalid_1 = require('./data/invalid_1.json');
-// var invalid_2 = require('./data/invalid_2.json');
-// var invalid_3 = require('./data/invalid_3.json');
-// var valid_nested = require('./data/valid_vulns_nested.json');
-
 
 // 
 // I'm pretty confident that there should be a set up function and the 
 // respective tear down, but I'll follow nodesecurity-www pattern and come back
 // to that when all tests are here
 // 
-
 exports['Register the User Plugin'] = function (test) {
+    // Delete the DB
+    // 
+
+    // Run the script to add the admin
+    // 
+
+
     var hapi_plugins = {
         'hapi-auth-basic': null,
         'bucker': config.bucker
