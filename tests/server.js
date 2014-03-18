@@ -12,6 +12,13 @@ var server  = new Hapi.Server();
 // var invalid_3 = require('./data/invalid_3.json');
 // var valid_nested = require('./data/valid_vulns_nested.json');
 
+
+// 
+// I'm pretty confident that there should be a set up function and the 
+// respective tear down, but I'll follow nodesecurity-www pattern and come back
+// to that when all tests are here
+// 
+
 exports['Register the User Plugin'] = function (test) {
     var hapi_plugins = {
         'hapi-auth-basic': null,

@@ -16,9 +16,9 @@ var hapi_plugins = {
 };
 
 var nsp_plugins = [
-    require('./plugins/user') //,
-    // require('./plugins/aoi'),
-    // require('./plugins/report')
+    require('./plugins/user'),
+    require('./plugins/aoi'),
+    require('./plugins/report')
 ];
 
 server.pack.require(hapi_plugins, function (err) {
@@ -60,6 +60,3 @@ function validate(username, password, callback) {
         });
     });
 }
-
-// note: how to make logs with this bucker thing 
-// plugin.log(['debug', 'hapi-advisories'], 'skipping template.md');
