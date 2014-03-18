@@ -13,6 +13,5 @@
     "type": "oauth",
     "token": "REPLACE-ME-WITH-YOUR-OAUTH-TOKEN"
   },
-  "hapi": {
-  }
+  "db": "./db"
 }

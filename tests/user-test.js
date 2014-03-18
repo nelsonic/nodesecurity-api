@@ -5,6 +5,7 @@ var store   = require('./../store');
 store.attachDB();
 var User    = store.models.User;
 var server  = new Hapi.Server();
+var exec    = require('child_process').exec;
 
 // 
 // I'm pretty confident that there should be a set up function and the 
@@ -12,8 +13,9 @@ var server  = new Hapi.Server();
 // to that when all tests are here
 // 
 exports['Register the User Plugin'] = function (test) {
-    // Delete the DB
-    // 
+    exec('rm -r ' + config.db, function (err, stdout, stderr) {
+        test.ifError(err);
+    });
 
     // Run the script to add the admin
     // 
