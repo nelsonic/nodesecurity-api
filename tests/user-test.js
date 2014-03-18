@@ -6,18 +6,27 @@ store.attachDB();
 var User    = store.models.User;
 var server  = new Hapi.Server();
 var exec    = require('child_process').exec;
+var spawn   = require('child_process').spawn;
+var path    = require('path');
+
+var admin   = require('./data/admin.js');
+var user1   = require('./data/user1.js');
+var user2   = require('./data/user2.js');
 
 // 
-// I'm pretty confident that there should be a set up function and the 
-// respective tear down, but I'll follow nodesecurity-www pattern and come back
-// to that when all tests are here
+// Tests
 // 
+exports.setUp = function (callback) {
+    callback();
+},
+
+exports.tearDown = function (callback) {
+    callback();
+},
+
 exports['Register the User Plugin'] = function (test) {
-    exec('rm -r ' + config.db, function (err, stdout, stderr) {
-        test.ifError(err);
-    });
-
-    // Run the script to add the admin
+    // clean the DB
+    // fritzy is building a .wipe functionality for the db
     // 
 
 
@@ -48,6 +57,136 @@ exports['Register the User Plugin'] = function (test) {
     }
 };
 
+
+exports['POST /user - Should not allow Public Access'] = function (test) {
+    server.inject({
+        method: 'POST',
+        url: '/user',
+        payload: user1
+    }, function (res) {
+        test.equal(res.statusCode, '401', 'should return a 401');
+        test.done();
+    });
+};
+
+
+exports['POST /user - Should allow Admin Access (create user1)'] = function (test) {
+    server.inject({
+        method: 'POST',
+        url: '/user',
+        credentials: {
+            user: {
+                admin: true
+            }
+        },
+        payload: user1
+    }, function (res) {
+        var payload;
+        test.doesNotThrow(function () {payload = JSON.parse(res.payload); });
+        test.equal(res.statusCode, '201', 'should return a 201');
+        user1._id = payload._id;
+        test.done();
+    });
+};
+
+exports['POST /user - Should not allow normal User Access'] = function (test) {
+    server.inject({
+        method: 'POST',
+        url: '/user',
+        credentials: {
+            user: {
+                admin: false
+            }
+        },
+        payload: user2
+    }, function (res) {
+        test.equal(res.statusCode, '401', 'should return a 401');
+        test.done();
+    });
+};
+
+
+exports['POST /user - Should allow Admin Access (create user2)'] = function (test) {
+    server.inject({
+        method: 'POST',
+        url: '/user',
+        credentials: {
+            user: {
+                admin: true
+            }
+        },
+        payload: user2
+    }, function (res) {
+        var payload;
+        test.doesNotThrow(function () {payload = JSON.parse(res.payload); });
+        test.equal(res.statusCode, '201', 'should return a 201');
+        user2._id = payload._id;
+        test.done();
+    });
+};
+
+exports['GET /user/{id} - Should not allow Public Access'] = function (test) {
+    server.inject({
+        method: 'GET',
+        url: '/user/' + encodeURIComponent(user1._id)
+    }, function (res) {
+        test.equal(res.statusCode, '401', 'should return a 401');
+        test.done();
+    });
+};
+
+exports['GET /user/{id} - Should allow Admin Access'] = function (test) {
+    server.inject({
+        method: 'GET',
+        url: '/user/' + encodeURIComponent(user1._id),
+        credentials: {
+            user: {
+                admin: true
+            }
+        }
+    }, function (res) {
+        test.equal(res.statusCode, '200', 'should return a 200');
+        var payload;
+        test.doesNotThrow(function () {payload = JSON.parse(res.payload); });
+        test.equal(payload.username, user1.username);
+        test.done();
+    });
+};
+
+
+exports['GET /user/{id} - Should allow Owner Access'] = function (test) {
+    server.inject({
+        method: 'GET',
+        url: '/user/' + encodeURIComponent(user1._id),
+        credentials: {
+            user: {
+                username: user1.username
+            }
+        }
+    }, function (res) {
+        test.equal(res.statusCode, '200', 'should return a 200');
+        var payload;
+        test.doesNotThrow(function () {payload = JSON.parse(res.payload); });
+        test.equal(payload.username, user1.username);
+        test.done();
+    });
+};
+
+exports['GET /user/{id} - Should not allow other user Access'] = function (test) {
+    server.inject({
+        method: 'GET',
+        url: '/user/' + encodeURIComponent(user1._id),
+        credentials: {
+            user: {
+                username: user2.username
+            }
+        }
+    }, function (res) {
+        test.equal(res.statusCode, '401', 'should return a 401');
+        test.done();
+    });
+};
+
 exports['GET /users - Should not allow Public Access'] = function (test) {
     server.inject({
         method: 'GET',
@@ -58,175 +197,116 @@ exports['GET /users - Should not allow Public Access'] = function (test) {
     });
 };
 
+exports['GET /users - Should allow Admin Access'] = function (test) {
+    server.inject({
+        method: 'GET',
+        url: '/users',
+        credentials: {
+            user: {
+                admin: true
+            }
+        }
+    }, function (res) {
+        test.equal(res.statusCode, '200', 'should return a 200');
+        test.done();
+    });
+};
+
+exports['PUT /user/{id} - Should not allow public  Access'] = function (test) {
+    server.inject({
+        method: 'PUT',
+        url: '/user/' + encodeURIComponent(user1._id),
+        payload: user1
+    }, function (res) {
+        test.equal(res.statusCode, '401', 'should return a 401');
+        test.done();
+    });
+};
+
+
+exports['PUT /user/{id} - Should not allow other user Access'] = function (test) {
+    server.inject({
+        method: 'PUT',
+        url: '/user/' + encodeURIComponent(user1._id),
+        credentials: {
+            user: {
+                username: user2.username
+            }
+        }
+    }, function (res) {
+        test.equal(res.statusCode, '401', 'should return a 401');
+        test.done();
+    });
+};
 
 
 
+exports['PUT /user/{id} - Should allow Owner Access'] = function (test) {
+    var updatedUser = {
+        first_name: 'user1',
+        last_name: 'last'
+    }
+    server.inject({
+        method: 'PUT',
+        url: '/user/' + encodeURIComponent(user1._id),
+        credentials: {
+            user: {
+                username: user1.username
+            }
+        },
+        payload: updatedUser
+    }, function (res) {
+        console.log('response', res);
+        test.equal(res.statusCode, '200', 'should return a 200');
+        var payload;
+        test.doesNotThrow(function () {payload = JSON.parse(res.payload); });
+        test.equal(payload.username, user1.username);
+        test.equal(payload.first_name, updatedUser.first_name);
+        user1.first_name = updatedUser.first_name;
+        test.equal(payload.last_name, updatedUser.last_name);
+        user1.last_name = updatedUser.last_name;
+        test.done();
+    });
+};
+
+exports['DELETE /user/{id} - Should not allow public Access'] = function (test) {
+    server.inject({
+        method: 'DELETE',
+        url: '/user/' + encodeURIComponent(user1._id)
+    }, function (res) {
+        test.equal(res.statusCode, '401', 'should return a 401');
+        test.done();
+    });
+};
 
 
-// describe('GET /users', function () {
-//     it('Should disallow public access', function (done) {
-//         request(apiUrl + '/users', function (err, response, body) {
-//             assert.ifError(err);
-//             assert.equal(response.statusCode, 401);
-//             done();
-//         });
-//     });
-// });
-
-// describe('GET /users', function () {
-//     it('Should allow admin access', function (done) {
-//         request({
-//             method: 'GET',
-//             url: apiUrl + '/users',
-//             auth: {
-//                 user: admin.username,
-//                 pass: admin.password,
-//                 sendImmediately: true
-//             }
-//         }, function (err, response, body) {
-//             assert.ifError(err);
-//             assert.equal(response.statusCode, 200);
-//             done();
-//         });
-//     });
-// });
+exports['DELETE /user/{id} - Should not allow public Access'] = function (test) {
+    server.inject({
+        method: 'DELETE',
+        url: '/user/' + encodeURIComponent(user1._id),
+        credentials: {
+            user: {
+                username: user1.username
+            }
+        }
+    }, function (res) {
+        test.equal(res.statusCode, '401', 'should return a 401');
+        test.done();
+    });
+};
 
 
-
-
-// exports['valid payload - vulns'] = function (test) {
-//     server.inject({
-//         method: 'POST',
-//         url: '/validate/shrinkwrap',
-//         payload: valid_vulns
-
-//     }, function (res) {
-//         var payload;
-//         test.equal(res.statusCode, '200', 'should return a 200');
-//         test.doesNotThrow(function () {payload = JSON.parse(res.payload); });
-//         test.equal(payload.length, 2);
-//         test.ok(payload[0].module, 'should have a module key');
-//         test.ok(payload[0].version, 'should have a version key');
-//         test.ok(payload[0].advisory, 'show have an advisory key');
-//         test.done();
-//     });
-// };
-
-// exports['invalid payload: no name, empty dependencies'] = function (test) {
-//     // No name
-//     // empty dependencies
-
-//     server.inject({
-//         method: 'POST',
-//         url: '/validate/shrinkwrap',
-//         payload: invalid_1
-//     }, function (res) {
-//         var payload;
-//         test.equal(res.statusCode, '200', 'should return a 200');
-//         test.doesNotThrow(function () {payload = JSON.parse(res.payload); });
-//         test.equal(res.payload, '[]', 'should return no results');
-//         test.done();
-//     });
-// };
-
-// exports['invalid payload: vuln module, no version'] = function (test) {
-//     server.inject({
-//         method: 'POST',
-//         url: '/validate/shrinkwrap',
-//         payload: invalid_2
-//     }, function (res) {
-//         var payload;
-//         test.equal(res.statusCode, '200', 'should return a 200');
-//         test.doesNotThrow(function () {payload = JSON.parse(res.payload); });
-//         test.equal(res.payload, '[]', 'should return no results');
-//         test.done();
-//     });
-// };
-
-// exports['invalid payload: vuln module, invalid version'] = function (test) {
-//     server.inject({
-//         method: 'POST',
-//         url: '/validate/shrinkwrap',
-//         payload: invalid_3
-//     }, function (res) {
-//         var payload;
-//         test.equal(res.statusCode, '200', 'should return a 200');
-//         test.doesNotThrow(function () {payload = JSON.parse(res.payload); });
-//         test.equal(res.payload, '[]', 'should return no results');
-//         test.done();
-//     });
-// };
-
-// exports['non existent module'] = function (test) {
-//     server.inject({
-//         method: 'GET',
-//         url: '/validate/herpmcderp/1.2.1'
-//     }, function (res) {
-//         var payload;
-//         test.equal(res.statusCode, '200', 'should return a 200');
-//         test.doesNotThrow(function () {payload = JSON.parse(res.payload); });
-//         test.equal(res.payload, '[]', 'should return no results');
-//         test.done();
-//     });
-// };
-
-// exports['existing module wrong version'] = function (test) {
-//     server.inject({
-//         method: 'GET',
-//         url: '/validate/tomato/1.2.1'
-//     }, function (res) {
-//         var payload;
-//         test.equal(res.statusCode, '200', 'should return a 200');
-//         test.doesNotThrow(function () {payload = JSON.parse(res.payload); });
-//         test.equal(res.payload, '[]', 'should return no results');
-//         test.done();
-//     });
-// };
-
-
-// exports['existing module invalid version'] = function (test) {
-//     server.inject({
-//         method: 'GET',
-//         url: '/validate/tomato/1.'
-//     }, function (res) {
-//         var payload;
-//         test.equal(res.statusCode, '200', 'should return a 200');
-//         test.doesNotThrow(function () {payload = JSON.parse(res.payload); });
-//         test.equal(res.payload, '[]', 'should return no results');
-//         test.done();
-//     });
-// };
-
-
-// exports['existing module vuln version'] = function (test) {
-//     server.inject({
-//         method: 'GET',
-//         url: '/validate/tomato/0.0.1'
-//     }, function (res) {
-//         var payload;
-//         test.equal(res.statusCode, '200', 'should return a 200');
-//         test.doesNotThrow(function () {payload = JSON.parse(res.payload); });
-//         test.equal(payload.length, 1);
-//         test.done();
-//     });
-// };
-
-// exports['Dependency Tree'] = function (test) {
-//     server.inject({
-//         method: 'POST',
-//         url: '/validate/shrinkwrap',
-//         payload: valid_nested
-
-//     }, function (res) {
-//         var payload;
-//         test.equal(res.statusCode, '200', 'should return a 200');
-//         test.doesNotThrow(function () {payload = JSON.parse(res.payload); });
-//         test.equal(payload.length, 1);
-//         test.ok(payload[0].module, 'should have a module key');
-//         test.ok(payload[0].version, 'should have a version key');
-//         test.ok(payload[0].advisory, 'should have an advisory key');
-//         test.deepEqual(payload[0].dependencyOf, ['root', 'second'], 'should have second and root as parents');
-//         test.done();
-//     });
-// };
-
+exports['DELETE /user/{id} - Should allow admin Access'] = function (test) {
+    server.inject({
+        method: 'DELETE',
+        url: '/user/' + encodeURIComponent(user1._id),
+        credentials: {
+            user: {
+                admin: true
+            }
+        }
+    }, function (res) {
+        test.equal(res.statusCode, '200', 'should return a 200');
+        test.done();
+    });
+};

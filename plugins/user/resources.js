@@ -8,6 +8,9 @@ var Hapi   = require('hapi');
  *	Get a list of users
  */
 exports.getBatch = function (request, reply) {
+	console.log('headers \n', request.headers);
+
+
 	if (!request.auth.credentials.user.admin) {
 		return reply(Hapi.error.unauthorized('go away'));
 	}
