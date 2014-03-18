@@ -1,5 +1,5 @@
 var Hapi = require('hapi');
-var handlers = require('../handlers/report.js');
+var handlers = require('./resources.js');
 
 module.exports = function (server) {
     // GET /reports/{module_name}/{module_version}

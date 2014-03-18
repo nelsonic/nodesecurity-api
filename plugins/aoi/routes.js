@@ -1,5 +1,5 @@
 var Hapi = require('hapi');
-var handlers = require('../handlers/aoi.js');
+var handlers = require('./resources.js');
 
 module.exports = function (server) {
     // GET /aoi/{module_name}/{module_version}

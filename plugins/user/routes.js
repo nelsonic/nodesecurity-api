@@ -1,5 +1,5 @@
 var Hapi = require('hapi');
-var handlers = require('../handlers/user');
+var handlers = require('./resources.js');
 
 module.exports = function (server) {
     // GET /users

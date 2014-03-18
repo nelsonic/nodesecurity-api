@@ -1,4 +1,4 @@
-var store   = require('./../store');
+var store   = require('./../../store');
 var User    = store.models.User;
 var config = require('config');
 var logger = require('bucker').createLogger(config.bucker, module);

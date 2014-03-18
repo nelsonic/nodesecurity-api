@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server",
-    "test": "NODE_ENV=test node_modules/mocha/bin/mocha"
+    "test": "node_modules/.bin/nodeunit tests/server.js"
   },
   "repository": {
     "type": "git",
@@ -39,6 +39,7 @@
     "precommit-hook": "~0.3.8",
     "bucker": "~0 .6.3",
     "mocha": "~1.13.0",
-    "request": "~2.27.0"
+    "request": "~2.27.0",
+    "nodeunit": "^0.8.6"
   }
 }
