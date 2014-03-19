@@ -9,10 +9,7 @@ exports.version = '1.0.0';
 var internals = {};
 
 internals.defaults = {
-    title: 'AOI Plugin'//,
-    // handler: function (request, config, next) {
-    //     next();
-    // }
+    title: 'AOI Plugin'
 };
 
 exports.register = function (plugin, options, next) {

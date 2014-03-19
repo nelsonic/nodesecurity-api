@@ -5,10 +5,6 @@ var store   = require('./../store');
 store.attachDB();
 var User    = store.models.User;
 var server  = new Hapi.Server();
-var exec    = require('child_process').exec;
-var spawn   = require('child_process').spawn;
-var path    = require('path');
-
 var admin   = require('./data/admin.js');
 var user1   = require('./data/user1.js');
 var user2   = require('./data/user2.js');
@@ -245,7 +241,7 @@ exports['PUT /user/{id} - Should allow Owner Access'] = function (test) {
     var updatedUser = {
         first_name: 'user1',
         last_name: 'last'
-    }
+    };
     server.inject({
         method: 'PUT',
         url: '/user/' + encodeURIComponent(user1._id),
@@ -256,7 +252,6 @@ exports['PUT /user/{id} - Should allow Owner Access'] = function (test) {
         },
         payload: updatedUser
     }, function (res) {
-        console.log('response', res);
         test.equal(res.statusCode, '200', 'should return a 200');
         var payload;
         test.doesNotThrow(function () {payload = JSON.parse(res.payload); });

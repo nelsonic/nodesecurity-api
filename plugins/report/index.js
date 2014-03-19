@@ -9,10 +9,7 @@ exports.version = '1.0.0';
 var internals = {};
 
 internals.defaults = {
-    title: 'Report Plugin'//,
-    // handler: function (request, config, next) {
-    //     next();
-    // }
+    title: 'Report Plugin'
 };
 
 exports.register = function (plugin, options, next) {

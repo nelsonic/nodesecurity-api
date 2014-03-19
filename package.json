@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server",
-    "test": "NODE_ENV=test node_modules/.bin/nodeunit tests/user-test.js"
+    "test": "NODE_ENV=test node_modules/.bin/nodeunit tests/*-test.js"
   },
   "repository": {
     "type": "git",
