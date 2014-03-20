@@ -5,7 +5,7 @@ var store   = require('./../store');
 store.attachDB();
 var User    = store.models.User;
 var server  = new Hapi.Server();
-var admin   = require('./data/admin.js');
+// var admin   = require('./data/admin.js');
 var user1   = require('./data/user1.js');
 var user2   = require('./data/user2.js');
 
@@ -20,11 +20,14 @@ exports.tearDown = function (callback) {
     callback();
 },
 
-exports['Register the User Plugin'] = function (test) {
-    // clean the DB
-    // fritzy is building a .wipe functionality for the db
-    // 
+exports['Wipe the DB first'] = function (test) {
+    User.wipe(function (err) {
+        test.ifError(err);
+        test.done();
+    });
+};
 
+exports['Register the User Plugin'] = function (test) {
 
     var hapi_plugins = {
         'hapi-auth-basic': null,

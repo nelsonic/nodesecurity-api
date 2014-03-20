@@ -33,7 +33,7 @@
     "level": "^0.18.0",
     "async": "^0.2.10",
     "verymodel": "^1.8.0",
-    "verymodel-level": "^1.7.2"
+    "verymodel-level": "^1.8.1"
   },
   "devDependencies": {
     "precommit-hook": "~0.3.8",
