@@ -32,8 +32,8 @@
     "hapi": "^3.0.0",
     "level": "^0.18.0",
     "async": "^0.2.10",
-    "verymodel": "^1.8.0",
-    "verymodel-level": "^1.8.1"
+    "verymodel": "^1.8.1",
+    "verymodel-level": "^1.9.0"
   },
   "devDependencies": {
     "precommit-hook": "~0.3.8",

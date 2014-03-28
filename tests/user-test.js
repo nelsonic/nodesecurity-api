@@ -147,6 +147,7 @@ exports['GET /user/{id} - Should allow Admin Access'] = function (test) {
         test.equal(res.statusCode, '200', 'should return a 200');
         var payload;
         test.doesNotThrow(function () {payload = JSON.parse(res.payload); });
+        console.log('\n\nCHECK IF THE PASSWORD IS THERE AND HASHED\n\n', payload);
         test.equal(payload.username, user1.username);
         test.done();
     });
