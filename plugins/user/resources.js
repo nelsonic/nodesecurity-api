@@ -52,6 +52,8 @@ exports.create = function (request, reply) {
 	console.log(request.payload);
 
 	var u = User.create(request.payload);
+	// ser the password as an salted hash, using the onSet function
+	u.password = request.payload.password;
 
 	u.save(function (err) {
 		if (err) {

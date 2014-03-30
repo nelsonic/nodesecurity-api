@@ -31,7 +31,7 @@ var User = new VeryLevelModel(
             var password = bcrypt.hashSync(value, salt);
             return password;
         },
-        // private: true
+        private: true
     },
     username: {
         type: new type().isEmail(),
@@ -51,8 +51,8 @@ var User = new VeryLevelModel(
 },
 {
     prefix: 'user',
-    includeKey: false//,
-    // savePrivate: true
+    includeKey: false,
+    savePrivate: true
 });
 
 User.findByUserName = function (username, callback) {

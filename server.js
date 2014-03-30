@@ -52,6 +52,7 @@ server.pack.require(hapi_plugins, function (err) {
 
 function validate(username, password, callback) {
     User.findByUserName(username, function (err, user) {
+        user = user.toJSON({withPrivate: true});
         if (!user) {
             return callback(null, false);
         }
