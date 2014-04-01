@@ -1,5 +1,5 @@
 var Hapi = require('hapi');
-var handlers = require('./resources.js');
+var resources = require('./resources.js');
 
 module.exports = function (server) {
     // GET /aoi/{module_name}/{module_version}
@@ -7,7 +7,7 @@ module.exports = function (server) {
     server.route({
         method: 'GET',
         path: '/aoi/{module_name}/{module_version}',
-        handler: handlers.get,
+        handler: resources.get,
         config: {
             validate: {
                 path: {
@@ -24,7 +24,7 @@ module.exports = function (server) {
     server.route({
         method: 'POST',
         path: '/aoi/{module_name}/{module_version}',
-        handler: handlers.create,
+        handler: resources.create,
         config: {
             validate: {
                 path: {

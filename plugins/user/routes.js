@@ -1,12 +1,12 @@
 var Hapi = require('hapi');
-var handlers = require('./resources.js');
+var resources = require('./resources.js');
 
 module.exports = function (server) {
     // GET /users
     server.route({
         method: 'GET',
         path: '/users',
-        handler: handlers.getBatch,
+        handler: resources.getBatch,
         config: {
             auth: 'simple'
         }
@@ -16,7 +16,7 @@ module.exports = function (server) {
     server.route({
         method: 'GET',
         path: '/user/{user_id}',
-        handler: handlers.get,
+        handler: resources.get,
         config: {
             validate: {
                 path: {
@@ -32,7 +32,7 @@ module.exports = function (server) {
     server.route({
         method: 'POST',
         path: '/user',
-        handler: handlers.create,
+        handler: resources.create,
         config: {
             validate: {
                 payload: {
@@ -51,7 +51,7 @@ module.exports = function (server) {
     server.route({
         method: 'DELETE',
         path: '/user/{user_id}',
-        handler: handlers.remove,
+        handler: resources.remove,
         config: {
             validate: {
                 path: {
@@ -66,7 +66,7 @@ module.exports = function (server) {
     server.route({
         method: 'PUT',
         path: '/user/{user_id}',
-        handler: handlers.update,
+        handler: resources.update,
         config: {
             validate: {
                 payload: {

@@ -1,7 +1,5 @@
 var Hapi = null; // Initialized during plugin registration
-var fs = require('fs');
-var path = require('path');
-var config = require('config');
+
 
 exports.name    = 'aoi';
 exports.version = '1.0.0';
