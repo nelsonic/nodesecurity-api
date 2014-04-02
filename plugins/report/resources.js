@@ -1,7 +1,8 @@
 var config = require('config');
 var logger = require('bucker').createLogger(config.bucker, module);
+var Hapi   = require('hapi');
 
-exports.get = function (request) {
+exports.get = function (request, reply) {
 	var self = this;
 
 	logger.debug('GET /reports/{module_name}/{module_version}');
@@ -12,24 +13,24 @@ exports.get = function (request) {
 	// TODO: Get published vulnerability reports for this module@version
 	// TODO: Filter list: admins get everything, public only gets published vulnerability reports
 
-	request.reply(this.hapi.error.notImplemented());
+	reply(Hapi.error.notImplemented());
 };
 
 /**
  *	Create a report
  */
-exports.create = function (request) {
+exports.create = function (request, reply) {
 	// TODO: Save new report
-	request.reply(this.hapi.error.notImplemented());
+	reply(Hapi.error.notImplemented());
 };
 
 /**
  *	Update a handler
  */
-exports.update = function (request) {
+exports.update = function (request, reply) {
 	var reportId = request.params.report_id;
 
 	// TODO: Save updated report
 
-	request.reply(this.hapi.error.notImplemented());
+	reply(Hapi.error.notImplemented());
 };
