@@ -1,14 +1,14 @@
 var store   = require('./../../store');
 var User    = store.models.User;
-var config = require('config');
-var logger = require('bucker').createLogger(config.bucker, module);
-var Hapi   = require('hapi');
+var config  = require('config');
+var logger  = require('bucker').createLogger(config.bucker, module);
+var Hapi    = require('hapi');
 
 /**
  *	Get a list of users
  */
 exports.getBatch = function (request, reply) {
-	console.log('headers \n', request.headers);
+	logger.log('headers \n', request.headers);
 
 
 	if (!request.auth.credentials.user.admin) {
@@ -49,7 +49,7 @@ exports.create = function (request, reply) {
 		return reply(Hapi.error.unauthorized('go away'));
 	}
 
-	console.log(request.payload);
+	logger.log(request.payload);
 
 	var u = User.create(request.payload);
 	// ser the password as an salted hash, using the onSet function
@@ -78,10 +78,13 @@ exports.update = function (request, reply) {
 
 		if (request.auth.credentials.user.admin || user.username === request.auth.credentials.user.username) {
 			Object.keys(request.payload).forEach(function (key) {
-				console.log(request.payload);
+				logger.log(request.payload);
 				user[key] = request.payload[key];
 			});
 			user.save(function (err) {
+				if (err) {
+					logger.error(err);
+				}
 				reply(user);
 			});
 		} else {

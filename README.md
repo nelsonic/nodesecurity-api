@@ -1,5 +1,7 @@
 # API [![Build Status](https://travis-ci.org/nodesecurity/nodesecurity-api.png)](https://travis-ci.org/nodesecurity/nodesecurity-api) [![Dependency Status](https://david-dm.org/nodesecurity/nodesecurity-api.png)](https://david-dm.org/nodesecurity/nodesecurity-api)
 
+![](https://nodesecurity.io/img/nodesecurity.png)
+
 This is where the Node Security Project api is going to live.
 
 Pull requests are appreciated and contributors will be attributed at https://nodesecurity.io/contributors

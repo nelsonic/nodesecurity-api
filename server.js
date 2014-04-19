@@ -18,31 +18,32 @@ var hapi_plugins = {
 var nsp_plugins = [
     require('./plugins/user'),
     require('./plugins/aoi'),
-    require('./plugins/report')
+    require('./plugins/report'),
+    require('./plugins/advisories')
 ];
 
 server.pack.require(hapi_plugins, function (err) {
     
     if (err) {
-        console.log('Failed to load a hapi_plugins: ', err);
+        logger.log('Failed to load a hapi_plugins: ', err);
         process.exit(1);
     }
     server.auth.strategy('simple', 'basic', { validateFunc: validate });
     // Register all the plugins
     async.each(nsp_plugins, registerPlugin, function (err) {
         if (err) {
-            console.log('Failed to load a nsp_plugins: ', err);
+            logger.log('Failed to load a nsp_plugins: ', err);
             process.exit(1);
         }
         server.start(function () {
-            console.log('Server started at: ' + server.info.uri);
+            logger.log('Server started at: ' + server.info.uri);
         });
     });
 
     function registerPlugin(plug, cb) {
         server.pack.register(plug, {}, function (err) {
             if (err) {
-                console.log('Failed loading a nsp_plugin: ' + plug.name);
+                logger.log('Failed loading a nsp_plugin: ' + plug.name);
                 process.exit(1);
             }
             cb();

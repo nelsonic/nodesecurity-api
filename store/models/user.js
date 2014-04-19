@@ -1,4 +1,4 @@
-var VeryLevelModel = require('verymodel-level');
+var dulcimer = require('dulcimer');
 var verymodel = require('verymodel');
 var bcrypt = require('bcrypt');
 var crypto = require('crypto');
@@ -6,7 +6,7 @@ var async   = require('async');
 
 var type = verymodel.VeryType;
 
-var User = new VeryLevelModel(
+var User = new dulcimer.Model(
 {
     first_name: {
         type: new type().isAlphanumeric().len(1, 80)

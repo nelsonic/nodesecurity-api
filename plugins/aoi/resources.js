@@ -6,7 +6,7 @@ var Hapi   = require('hapi');
  *	Get an AOI
  */
 exports.get = function (request, reply) {
-	var self = this;
+	// var self = this;
 
 	logger.debug('GET /aoi/{module_name}/{module_version}');
 
@@ -23,7 +23,7 @@ exports.get = function (request, reply) {
  *	Create an AOI
  */
 exports.create =  function (request, reply) {
-	var self = this;
+	// var self = this;
 
 	logger.debug('POST /aoi/{module_name}/{module_version}');
 
