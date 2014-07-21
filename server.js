@@ -2,8 +2,8 @@ var Hapi    = require('hapi');
 var config  = require('config');
 var async   = require('async');
 
-var store   = require('./store');
-store.attachDB();
+require('./store');
+// store.attachDB();
 var User    = store.models.User;
 
 var bcrypt  = require('bcrypt');

@@ -70,7 +70,6 @@ exports.create = function (request, reply) {
  */
 exports.update = function (request, reply) {
 
-	// User.findOne({_id: request.params.user_id}).select('-password').exec(function (err, user) {
 	User.get(request.params.user_id, function (err, user) {
 		if (err) {
 			return reply(Hapi.error.notFound(Error('User not found')));

@@ -2,7 +2,6 @@ var Hapi    = require('hapi');
 var config  = require('config');
 var bcrypt  = require('bcrypt');
 var store   = require('./../store');
-store.attachDB();
 var User    = store.models.User;
 var server  = new Hapi.Server();
 

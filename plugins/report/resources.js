@@ -2,7 +2,26 @@ var config = require('config');
 var logger = require('bucker').createLogger(config.bucker, module);
 var Hapi   = require('hapi');
 
-exports.get = function (request, reply) {
+/**
+ *	Get all the reports (if admin, or the associated with the user)
+ */
+exports.getAllReports = function (request, reply) {
+
+	reply(Hapi.error.notImplemented());
+};
+
+/**
+ *	Get a Report by its id
+ */
+exports.getReportById = function (request, reply) {
+
+	reply(Hapi.error.notImplemented());
+};
+
+/**
+ *	Get a Report refering to a specific module name and version
+ */
+exports.getReportByModuleNameVersion = function (request, reply) {
 	var self = this;
 
 	logger.debug('GET /reports/{module_name}/{module_version}');
@@ -15,6 +34,9 @@ exports.get = function (request, reply) {
 
 	reply(Hapi.error.notImplemented());
 };
+
+
+
 
 /**
  *	Create a report

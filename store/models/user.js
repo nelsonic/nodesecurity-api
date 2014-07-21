@@ -35,7 +35,6 @@ var User = new dulcimer.Model(
     },
     username: {
         type: new type().isEmail(),
-        unique: true,
         required: true,
         index: true
     },
@@ -50,7 +49,7 @@ var User = new dulcimer.Model(
     }
 },
 {
-    prefix: 'user',
+    name: 'user',
     includeKey: false,
     savePrivate: true
 });

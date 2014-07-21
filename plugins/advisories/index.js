@@ -12,6 +12,12 @@ internals.defaults = {
     title: 'Advisories'
 };
 
+// NOTE:
+// There is a issue with Walker and therefore this is not working yet
+// Walker doesn't work well with paths 2 or more level deep
+// 
+
+
 exports.register = function (plugin, options, next) {
     plugin.log(['info', 'advisories'], 'advisories plugin registered');
 
@@ -24,7 +30,6 @@ exports.register = function (plugin, options, next) {
             plugin.log(['err', 'advisories'], err);
         }
         module_index = mi;
-        console.log('MODULE_INDEX: \n', module_index);
     });
 
 
@@ -38,7 +43,6 @@ exports.register = function (plugin, options, next) {
             }
         },
         handler: function (request, reply) {
-            console.log('MODULE_INDEX: \n', module_index);
             reply(validate(request.payload, module_index));
         }
     });

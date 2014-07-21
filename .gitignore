@@ -19,3 +19,4 @@ npm-debug.log
 node_modules
 
 config/runtime.json
+logs
