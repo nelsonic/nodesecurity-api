@@ -2,7 +2,7 @@ var Hapi    = require('hapi');
 var config  = require('config');
 var async   = require('async');
 
-require('./store');
+var store   = require('./store');
 // store.attachDB();
 var User    = store.models.User;
 

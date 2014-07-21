@@ -31,7 +31,7 @@ var Report = new dulcimer.Model({
             crypto.createHash('md5').update(
                 model.module_name +
                 model.module_version +
-                Date.now().toString() 
+                Date.now().toString()
                 ).digest('hex');
             return md5NameVersionDate;
         }
