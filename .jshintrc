@@ -11,6 +11,7 @@
     "quotmark"  : true,
     "trailing"  : true,
     "laxcomma"  : true,
+    "indent"    : 2,
     "predef"    : [
         "$",
         "FormBot",

@@ -1,14 +1,18 @@
 var dulcimer = require('dulcimer');
-var config  = require('config');
+var config   = require('config');
 
-dulcimer.connect({
+if (process.env.NODE_ENV !== 'PROD') {
+  dulcimer.connect({
     type: 'level',
     path: config.db,
     bucket: 'defaultbucket'
-});
-
+  });  
+} else {
+  // Connect to Riak
+}
 
 module.exports.models = {
-    User: require('./models/User')
-    // add more models here
+  User: require('./models/user.js'),
+  Report: require('./models/report.js')
+  // add more models here
 };

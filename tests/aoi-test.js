@@ -10,44 +10,41 @@ var server  = new Hapi.Server();
 // Tests
 // 
 exports.setUp = function (callback) {
-    callback();
+  callback();
 },
 
 exports.tearDown = function (callback) {
-    callback();
+  callback();
 },
 
 exports['Register the aoi Plugin'] = function (test) {
-    // clean the DB
-    // fritzy is building a .wipe functionality for the db
-    // 
+  // clean the DB
+  
+  var hapi_plugins = {
+    'hapi-auth-basic': null,
+    'bucker': config.bucker
+  };
 
+  server.pack.require(hapi_plugins, function (err) {
+    test.ifError(err);
+    server.auth.strategy('simple', 'basic', { validateFunc: validate });
 
-    var hapi_plugins = {
-        'hapi-auth-basic': null,
-        'bucker': config.bucker
-    };
-
-    server.pack.require(hapi_plugins, function (err) {
-        test.ifError(err);
-        server.auth.strategy('simple', 'basic', { validateFunc: validate });
-
-        server.pack.register(require('./../plugins/aoi'), {}, function (err) {
-            test.ifError(err);
-            test.done();
-        });
+    server.pack.register(require('./../plugins/aoi'), {}, function (err) {
+      test.ifError(err);
+      test.done();
     });
+  });
 
-    function validate(username, password, callback) {
-        User.findByUserName(username, function (err, user) {
-            if (!user) {
-                return callback(null, false);
-            }
-            bcrypt.compare(password, user.password, function (err, isValid) {
-                callback(err, isValid, { id: user.key, user: user });
-            });
-        });
-    }
+  function validate(username, password, callback) {
+    User.findByUserName(username, function (err, user) {
+      if (!user) {
+        return callback(null, false);
+      }
+      bcrypt.compare(password, user.password, function (err, isValid) {
+        callback(err, isValid, { id: user.key, user: user });
+      });
+    });
+  }
 };
 
 

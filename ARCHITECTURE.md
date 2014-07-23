@@ -1,8 +1,9 @@
 ## TODO
-- [ ] update the nsp-api to use the new Dulcimer stuff
+- [X] update the nsp-api to use the new Dulcimer stuff
+- [X] figure out the report object model
 - [ ] finish the report plugin
 - [ ] add report feature to www
-- [ ] add report feature to api
+- [ ] add report feature to cli
 
 # plugin-report
 
