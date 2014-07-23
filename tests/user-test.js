@@ -73,9 +73,9 @@ exports['POST /user - Should allow Admin Access (create user1)'] = function (tes
     method: 'POST',
     url: '/user',
     credentials: {
-        user: {
-            admin: true
-        }
+      user: {
+        admin: true
+      }
     },
     payload: user1
   }, function (res) {

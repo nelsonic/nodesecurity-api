@@ -9,7 +9,7 @@ exports.version = '1.0.0';
 var internals = {};
 
 internals.defaults = {
-    title: 'Advisories'
+  title: 'Advisories'
 };
 
 // NOTE:
@@ -56,7 +56,7 @@ exports.register = function (plugin, options, next) {
       Object.keys(data).forEach(function (key) {
         var advisory = data[key];
         if (semver.valid(request.params.version) && semver.satisfies(request.params.version, advisory.vulnerable_versions)) {
-            result.push(advisory);
+          result.push(advisory);
         }
       });
       reply(result);

@@ -6,7 +6,7 @@ if (process.env.NODE_ENV !== 'PROD') {
     type: 'level',
     path: config.db,
     bucket: 'defaultbucket'
-  });  
+  });
 } else {
   // Connect to Riak
 }

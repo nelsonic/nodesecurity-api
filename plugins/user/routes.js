@@ -8,7 +8,7 @@ module.exports = function (server) {
     path: '/users',
     handler: resources.getBatch,
     config: {
-        auth: 'simple'
+      auth: 'simple'
     }
   });
 
