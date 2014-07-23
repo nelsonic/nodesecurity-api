@@ -58,7 +58,8 @@ function validate(username, password, callback) {
       return callback(null, false);
     }
     bcrypt.compare(password, user.password, function (err, isValid) {
-      callback(err, isValid, { id: user.key, user: user });
+      // callback(err, isValid, { id: user.key, user: user });
+      callback(err, isValid, user); // this is goint to set the .credentials
     });
   });
 }

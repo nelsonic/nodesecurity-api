@@ -8,7 +8,10 @@ module.exports = function (server) {
     path: '/users',
     handler: resources.getBatch,
     config: {
-      auth: 'simple'
+      auth: {
+        strategy: 'simple',
+        scope: ['admin']
+      }
     }
   });
 
@@ -23,7 +26,10 @@ module.exports = function (server) {
           user_id: Hapi.types.String().required()
         }
       },
-      auth: 'simple'
+      auth: {
+        strategy: 'simple',
+        scope: ['admin', 'user']
+      }
     }
   });
 
@@ -42,7 +48,10 @@ module.exports = function (server) {
           password: Hapi.types.String().required()
         }
       },
-      auth: 'simple'
+      auth: {
+        strategy: 'simple',
+        scope: ['admin']
+      }
     }
   });
 
@@ -58,7 +67,10 @@ module.exports = function (server) {
           user_id: Hapi.types.String().required()
         }
       },
-      auth: 'simple'
+      auth: {
+        strategy: 'simple',
+        scope: ['admin']
+      }
     }
   });
 
@@ -75,10 +87,15 @@ module.exports = function (server) {
           username: Hapi.types.String().email()
         }
       },
-      auth: 'simple'
+      auth: {
+        strategy: 'simple',
+        scope: ['admin', 'user']
+      }
     }
   });
 
   // TODO: Route to make a user an admin
+  // TODO: Route to make a user an contributor
+  // TODO: Route to make a user an reviewer  
   // TODO: Route to change user password
 };

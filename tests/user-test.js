@@ -73,9 +73,8 @@ exports['POST /user - Should allow Admin Access (create user1)'] = function (tes
     method: 'POST',
     url: '/user',
     credentials: {
-      user: {
-        admin: true
-      }
+      admin: true,
+      scope: ['admin']
     },
     payload: user1
   }, function (res) {
@@ -92,13 +91,11 @@ exports['POST /user - Should not allow normal User Access'] = function (test) {
     method: 'POST',
     url: '/user',
     credentials: {
-      user: {
-        admin: false
-      }
+      scope: ['user']
     },
     payload: user2
   }, function (res) {
-    test.equal(res.statusCode, '401', 'should return a 401');
+    test.equal(res.statusCode, '403', 'should return a 403');
     test.done();
   });
 };
@@ -109,9 +106,8 @@ exports['POST /user - Should allow Admin Access (create user2)'] = function (tes
     method: 'POST',
     url: '/user',
     credentials: {
-      user: {
-        admin: true
-      }
+      admin: true,
+      scope: ['admin']
     },
     payload: user2
   }, function (res) {
@@ -138,9 +134,8 @@ exports['GET /user/{id} - Should allow Admin Access'] = function (test) {
     method: 'GET',
     url: '/user/' + encodeURIComponent(user1._id),
     credentials: {
-      user: {
-        admin: true
-      }
+      admin: true,
+      scope: ['admin']
     }
   }, function (res) {
     test.equal(res.statusCode, '200', 'should return a 200');
@@ -158,9 +153,8 @@ exports['GET /user/{id} - Should allow Owner Access'] = function (test) {
     method: 'GET',
     url: '/user/' + encodeURIComponent(user1._id),
     credentials: {
-      user: {
-        username: user1.username
-      }
+      username: user1.username,
+      scope: ['user']
     }
   }, function (res) {
     test.equal(res.statusCode, '200', 'should return a 200');
@@ -176,9 +170,8 @@ exports['GET /user/{id} - Should not allow other user Access'] = function (test)
     method: 'GET',
     url: '/user/' + encodeURIComponent(user1._id),
     credentials: {
-      user: {
-        username: user2.username
-      }
+      username: user2.username,
+      scope: ['user']
     }
   }, function (res) {
     test.equal(res.statusCode, '401', 'should return a 401');
@@ -201,9 +194,8 @@ exports['GET /users - Should allow Admin Access'] = function (test) {
     method: 'GET',
     url: '/users',
     credentials: {
-      user: {
-        admin: true
-      }
+      admin: true,
+      scope: ['admin']
     }
   }, function (res) {
     test.equal(res.statusCode, '200', 'should return a 200');
@@ -228,9 +220,8 @@ exports['PUT /user/{id} - Should not allow other user Access'] = function (test)
     method: 'PUT',
     url: '/user/' + encodeURIComponent(user1._id),
     credentials: {
-      user: {
-        username: user2.username
-      }
+      username: user2.username,
+      scope: ['user']
     }
   }, function (res) {
     test.equal(res.statusCode, '401', 'should return a 401');
@@ -249,9 +240,8 @@ exports['PUT /user/{id} - Should allow Owner Access'] = function (test) {
     method: 'PUT',
     url: '/user/' + encodeURIComponent(user1._id),
     credentials: {
-      user: {
-        username: user1.username
-      }
+      username: user1.username,
+      scope: ['user']
     },
     payload: updatedUser
   }, function (res) {
@@ -283,12 +273,11 @@ exports['DELETE /user/{id} - Should not allow public Access'] = function (test) 
     method: 'DELETE',
     url: '/user/' + encodeURIComponent(user1._id),
     credentials: {
-      user: {
-        username: user1.username
-      }
+      username: user1.username,
+      scope: ['user']
     }
   }, function (res) {
-    test.equal(res.statusCode, '401', 'should return a 401');
+    test.equal(res.statusCode, '403', 'should return a 403');
     test.done();
   });
 };
@@ -299,9 +288,8 @@ exports['DELETE /user/{id} - Should allow admin Access'] = function (test) {
     method: 'DELETE',
     url: '/user/' + encodeURIComponent(user1._id),
     credentials: {
-      user: {
-        admin: true
-      }
+      admin: true,
+      scope: ['admin']
     }
   }, function (res) {
     test.equal(res.statusCode, '200', 'should return a 200');

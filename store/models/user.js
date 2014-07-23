@@ -42,6 +42,29 @@ var User = new dulcimer.Model({
     type: Boolean,
     default: false
   },
+  contributor: {
+    type: Boolean,
+    default: false
+  },
+  reviewer: {
+    type: Boolean,
+    default: false
+  },
+  scope : {
+    derive: function (model) {
+      var scope = ['user'];
+      if (model.admin) {
+        scope.push('admin');
+      }
+      if (model.contributor) {
+        scope.push('contributor');
+      }
+      if (model.reviewer) {
+        scope.push('reviewer');
+      }
+      return scope;
+    }
+  },
   id: {
     derive: function (model) {
       return model.key; //we use the key as the id

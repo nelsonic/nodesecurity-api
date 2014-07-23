@@ -1,4 +1,4 @@
-var Hapi = require('hapi');
+var Hapi      = require('hapi');
 var resources = require('./resources.js');
 
 module.exports = function (server) {
@@ -56,12 +56,13 @@ module.exports = function (server) {
     config: {
       validate: {
         payload: {
+          reporter_username: Hapi.types.String().required().email(),
           module_name: Hapi.types.String().required(),
-          // TODO: Use `semver.valid` https://github.com/isaacs/node-semver#functions
           module_version: Hapi.types.String().required(),
-          reporter_username: Hapi.types.String().required(),
-          description: Hapi.types.String().required(),
-          gist: Hapi.types.String()
+          description: Hapi.types.String(),
+          how_to_replicate: Hapi.types.String(),
+          gist: Hapi.types.String(),
+          other_links: Hapi.types.String()
         }
       },
       auth: 'simple'
@@ -80,12 +81,13 @@ module.exports = function (server) {
           report_id: Hapi.types.String().required()
         },
         payload: {
+          reporter_username: Hapi.types.String().required().email(),
           module_name: Hapi.types.String().required(),
-          // TODO: Use `semver.valid` https://github.com/isaacs/node-semver#functions
           module_version: Hapi.types.String().required(),
-          reporter_username: Hapi.types.String().required(),
-          description: Hapi.types.String().required(),
-          gist: Hapi.types.String()
+          description: Hapi.types.String(),
+          how_to_replicate: Hapi.types.String(),
+          gist: Hapi.types.String(),
+          other_links: Hapi.types.String()
         }
       },
       auth: 'simple'
